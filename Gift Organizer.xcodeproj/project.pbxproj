@@ -16,6 +16,7 @@
 		BC3C7A77216993CA0036A3A1 /* GiftIdea.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A76216993CA0036A3A1 /* GiftIdea.swift */; };
 		BC3C7A7A216994360036A3A1 /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A79216994360036A3A1 /* Cells.swift */; };
 		BC3C7A7C2169A78C0036A3A1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A7B2169A78B0036A3A1 /* Extensions.swift */; };
+		BC3C7A7E216ABFF20036A3A1 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A7D216ABFF20036A3A1 /* Views.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		BC3C7A76216993CA0036A3A1 /* GiftIdea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftIdea.swift; sourceTree = "<group>"; };
 		BC3C7A79216994360036A3A1 /* Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cells.swift; sourceTree = "<group>"; };
 		BC3C7A7B2169A78B0036A3A1 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		BC3C7A7D216ABFF20036A3A1 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +64,7 @@
 		BC3C7A5D216869550036A3A1 /* Gift Organizer */ = {
 			isa = PBXGroup;
 			children = (
-				BC3C7A78216994200036A3A1 /* Cells */,
+				BC3C7A78216994200036A3A1 /* Cells and Views */,
 				BC3C7A7321686BB20036A3A1 /* Classes */,
 				BC3C7A5E216869550036A3A1 /* AppDelegate.swift */,
 				BC3C7A60216869550036A3A1 /* ViewController.swift */,
@@ -84,12 +86,13 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		BC3C7A78216994200036A3A1 /* Cells */ = {
+		BC3C7A78216994200036A3A1 /* Cells and Views */ = {
 			isa = PBXGroup;
 			children = (
 				BC3C7A79216994360036A3A1 /* Cells.swift */,
+				BC3C7A7D216ABFF20036A3A1 /* Views.swift */,
 			);
-			path = Cells;
+			path = "Cells and Views";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +169,7 @@
 				BC3C7A7A216994360036A3A1 /* Cells.swift in Sources */,
 				BC3C7A77216993CA0036A3A1 /* GiftIdea.swift in Sources */,
 				BC3C7A61216869550036A3A1 /* ViewController.swift in Sources */,
+				BC3C7A7E216ABFF20036A3A1 /* Views.swift in Sources */,
 				BC3C7A5F216869550036A3A1 /* AppDelegate.swift in Sources */,
 				BC3C7A67216869550036A3A1 /* Gift_Organizer.xcdatamodeld in Sources */,
 				BC3C7A7C2169A78C0036A3A1 /* Extensions.swift in Sources */,

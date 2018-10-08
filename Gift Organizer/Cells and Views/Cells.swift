@@ -37,6 +37,7 @@ class HeaderCell: UITableViewHeaderFooterView {
     let remainingLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "$20.00"
+        lbl.font = lbl.font.withSize(14)
         lbl.backgroundColor = .blue
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
@@ -101,6 +102,51 @@ class HeaderCell: UITableViewHeaderFooterView {
 
 class FooterCell: UITableViewHeaderFooterView {
     
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        addSubview(totalGiftsLabel)
+        addSubview(totalGiftTitleLabel)
+        addSubview(totalSpentLabel)
+        
+        totalGiftsLabel.anchor(top: self.topAnchor, leading: nil, bottom: self.bottomAnchor, trailing: nil,padding: .init(top: 5, left: 5, bottom: 5, right: 0))
+        totalGiftsLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        totalGiftTitleLabel.centerYAnchor.constraint(equalTo: self.totalGiftsLabel.centerYAnchor).isActive = true
+        totalGiftTitleLabel.anchor(top: self.topAnchor, leading: nil, bottom: self.bottomAnchor, trailing: self.totalGiftsLabel.leadingAnchor, padding: .init(top: 5, left: 0, bottom: 5, right: 10))
+        
+        totalSpentLabel.anchor(top: self.topAnchor, leading: self.totalGiftsLabel.trailingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor,padding: .init(top: 5, left: 60, bottom: 5, right: 0))
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    let totalSpentLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = ""
+        lbl.font = lbl.font.withSize(14)
+        lbl.backgroundColor = .blue
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
+    let totalGiftsLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = ""
+        lbl.font = lbl.font.withSize(14)
+        lbl.backgroundColor = .red
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
+    let totalGiftTitleLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "Total Gifts:"
+        lbl.font = lbl.font.withSize(14)
+        lbl.backgroundColor = .blue
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
 }
 
 class GiftIdeaCell: UITableViewCell {
@@ -122,6 +168,7 @@ class GiftIdeaCell: UITableViewCell {
     let titleLabel: UILabel = {
         let titleLbl = UILabel()
         titleLbl.text = "Test Title"
+        titleLbl.font = titleLbl.font.withSize(18)
         titleLbl.translatesAutoresizingMaskIntoConstraints = false
         //titleLbl.backgroundColor = .blue
         return titleLbl
@@ -162,9 +209,9 @@ class GiftIdeaCell: UITableViewCell {
         self.addSubview(checkBoxLabel)
         
         itemPicture.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: imgSize, height: imgSize))
-        titleLabel.anchor(top: self.itemPicture.topAnchor, leading: self.itemPicture.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 5, left: 10, bottom: 0, right: 0), size: .init(width: 75, height: 20))
+        titleLabel.anchor(top: self.itemPicture.topAnchor, leading: self.itemPicture.trailingAnchor, bottom: nil, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 5, left: 10, bottom: 0, right: 15))
         descLabel.anchor(top: self.titleLabel.bottomAnchor, leading: self.titleLabel.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 3, left: 0, bottom: 0, right: 0), size: .init(width: 225, height: 35))
-        priceLabel.anchor(top: self.titleLabel.topAnchor, leading: self.titleLabel.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 45, bottom: 0, right: 0), size: .init(width: 75, height: 20))
+        priceLabel.anchor(top: self.titleLabel.topAnchor, leading: nil, bottom: nil, trailing: self.checkBoxLabel.leadingAnchor, padding: .init(top: 0, left: 45, bottom: 0, right: 0), size: .init(width: 75, height: 20))
         checkBoxLabel.anchor(top: nil, leading: nil, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 15), size: .init(width: 25, height: 25))
         checkBoxLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
