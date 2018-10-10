@@ -160,7 +160,7 @@ class GiftIdeaCell: UITableViewCell {
         img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         img.layer.cornerRadius = img.frame.size.height/2
         img.translatesAutoresizingMaskIntoConstraints = false
-        img.image = UIImage(named: "ATH-M50x")
+        //img.image = UIImage(named: "ATH-M50x")
         //img.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         return img
     }()
