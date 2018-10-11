@@ -96,6 +96,8 @@ class HeaderCell: UITableViewHeaderFooterView {
         
         remainingTitleLabel.anchor(top: nil, leading: nil, bottom: remainingLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 5, right: 0))
         remainingTitleLabel.centerXAnchor.constraint(equalTo: self.remainingLabel.centerXAnchor).isActive = true
+        
+        
     }
     
 }
@@ -155,13 +157,12 @@ class GiftIdeaCell: UITableViewCell {
     
     let itemPicture: UIImageView = {
         let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        img.layer.borderWidth = 1.0
-        img.layer.masksToBounds = false
-        img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        //img.layer.borderWidth = 1.0
+        //img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         img.layer.cornerRadius = img.frame.size.height/2
         img.translatesAutoresizingMaskIntoConstraints = false
-        //img.image = UIImage(named: "ATH-M50x")
-        //img.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        img.clipsToBounds = true
+        img.layer.masksToBounds = false
         return img
     }()
     
@@ -214,7 +215,26 @@ class GiftIdeaCell: UITableViewCell {
         priceLabel.anchor(top: self.titleLabel.topAnchor, leading: nil, bottom: nil, trailing: self.checkBoxLabel.leadingAnchor, padding: .init(top: 0, left: 45, bottom: 0, right: 0), size: .init(width: 75, height: 20))
         checkBoxLabel.anchor(top: nil, leading: nil, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 15), size: .init(width: 25, height: 25))
         checkBoxLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
+        //checkBoxLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleCheckTap)))
+        
     }
+    
+    let emptyBox = "Checkmarkempty"
+    let checkBox = "Checkmark"
+    
+//    @objc func handleCheckTap(){
+//
+//        if (self.checkBoxLabel == emptyBox) {
+//            checkImgNameArray[indexPath.row] = checkBox
+//            peopleArray[personIndex].giftIdeaList[indexPath.row].purchased = true
+//        } else {
+//            checkImgNameArray[indexPath.row] = emptyBox
+//            peopleArray[personIndex].giftIdeaList[indexPath.row].purchased = false
+//        }
+//        calcSpent()
+//        tableView.reloadData()
+//    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

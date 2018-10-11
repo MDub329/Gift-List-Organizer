@@ -30,7 +30,8 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         tableView.register(FooterCell.self, forHeaderFooterViewReuseIdentifier: footerId)
         
         setUpNavBar()
-        arrayTesting()
+        //arrayTesting()
+        peopleArray.append(People())
         calcSpent()
         //self.tableView.isEditing = true
         
@@ -49,30 +50,31 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         //add button is pressed
         
         if let window = UIApplication.shared.keyWindow {
-            window.addSubview(addPopUpView)
-            self.addPopUpView.frame = window.frame
-            self.addPopUpView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+            self.present(addPopUpView, animated: true, completion: nil)
+            
+            self.addPopUpView.view.frame = window.frame
+            self.addPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
             self.addPopUpView.saveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleSave)))
-            //self.addPopUpView.addImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleImgAdd)))
+            self.addPopUpView.addImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleImgAdd)))
             //ImagePicker shows below addPopUpView
-            self.addPopUpView.alpha = 0
-            self.addPopUpView.addView.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
-            self.addPopUpView.addView.centerYAnchor.constraint(equalTo: window.centerYAnchor).isActive = true
+            self.addPopUpView.view.alpha = 1
+            self.addPopUpView.addView.centerXAnchor.constraint(equalTo: self.addPopUpView.view.centerXAnchor).isActive = true
+            self.addPopUpView.addView.centerYAnchor.constraint(equalTo:self.addPopUpView.view.centerYAnchor).isActive = true
             self.addPopUpView.addView.heightAnchor.constraint(equalToConstant: window.frame.width/1.1).isActive = true
             self.addPopUpView.addView.widthAnchor.constraint(equalToConstant: window.frame.width/1.2).isActive = true
             self.addPopUpView.saveButton.anchor(top: nil, leading: nil, bottom: self.addPopUpView.addView.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: self.addPopUpView.addView.frame.width/2, height: 50))
-            self.addPopUpView.saveButton.centerXAnchor.constraint(equalTo: window.centerXAnchor).isActive = true
             self.addPopUpView.titleTextField.select(self) //Sets the cursor to titleTextfield
             
             self.addPopUpView.titleTextField.text = ""
             self.addPopUpView.descTextField.text = ""
             self.addPopUpView.priceTextField.text = ""
             self.addPopUpView.urlTextfield.text = ""
+            self.addPopUpView.imgView.image = nil
             
 
-            UIView.animate(withDuration: 0.5) {
-                self.addPopUpView.alpha = 1
-            }
+//            UIView.animate(withDuration: 0.5) {
+//                self.addPopUpView.view.alpha = 1
+//            }
         }
     }
     
@@ -80,7 +82,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         let image = UIImagePickerController()
         image.delegate = self
         image.sourceType = UIImagePickerController.SourceType.photoLibrary
-        self.present(image, animated: true, completion: nil)
+        self.addPopUpView.present(image, animated: true, completion: nil)
         
         
         
@@ -90,9 +92,8 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         let theinfo:NSDictionary = info as NSDictionary
         let img:UIImage = theinfo.object(forKey: UIImagePickerController.InfoKey.originalImage) as! UIImage
         self.addPopUpView.imgView.image = img
-        let index = peopleArray[personIndex].giftIdeaList.count-1
-        peopleArray[personIndex].giftIdeaList[index].imageView.image = img
-        self.dismiss(animated: true, completion: nil)
+        self.addPopUpView.dismiss(animated: true, completion: nil)
+        
 
         
     }
@@ -113,17 +114,20 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         if let link = addPopUpView.urlTextfield.text {
             newGift.link = link
         }
-        //set Img here
+        if let img = self.addPopUpView.imgView.image {
+            newGift.imageView.image = img
+        }
         
         peopleArray[personIndex].giftIdeaList.append(newGift)
         checkImgNameArray.append(emptyBox)
         
-        UIView.animate(withDuration: 0.5) {
-            self.addPopUpView.alpha = 0
-        }
+//        UIView.animate(withDuration: 0.5) {
+//            self.addPopUpView.view.alpha = 0
+//        }
         //let index = IndexPath(row: peopleArray[personIndex].giftIdeaList.count-1, section: 0)
         //tableView.insertRows(at: [index], with: .automatic)
         tableView.reloadSections([0], with: .automatic)
+        self.dismiss(animated: true, completion: nil)
         
     }
     
@@ -131,6 +135,9 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         //Top left button is pressed
     }
     
+    @objc func checkBoxTap() {
+      
+    }
 
     
     func arrayTesting() {
@@ -144,9 +151,11 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     func calcSpent() {
         var sum = 0.0
-        for item in peopleArray[personIndex].giftIdeaList {
-            if (item.purchased == true){
-                sum += item.price
+        if (!peopleArray[personIndex].giftIdeaList.isEmpty){
+            for item in peopleArray[personIndex].giftIdeaList {
+                if (item.purchased == true){
+                    sum += item.price
+                }
             }
         }
         peopleArray[personIndex].spentBudget = sum
@@ -159,7 +168,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         myCell.titleLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].title
         myCell.descLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].description
         myCell.itemPicture.image = peopleArray[personIndex].giftIdeaList[indexPath.row].imageView.image
-        
+        myCell.checkBoxLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.checkBoxTap)))
         return myCell
     }
     

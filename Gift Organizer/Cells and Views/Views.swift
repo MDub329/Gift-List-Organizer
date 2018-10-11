@@ -8,12 +8,12 @@
 
 import UIKit
 
-class AddPopupView: UIView {
+class AddPopupView: UIViewController {
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        self.addSubview(addView)
-        self.addSubview(saveButton)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.view.addSubview(addView)
+        self.view.addSubview(saveButton)
         self.addView.addSubview(titleLabel)
         self.addView.addSubview(descLabel)
         self.addView.addSubview(priceLabel)
@@ -46,10 +46,10 @@ class AddPopupView: UIView {
 
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+//    required init?(coder aDecoder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
+//    
     let addView: UIView = {
         let view = UIView()
         //view.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
