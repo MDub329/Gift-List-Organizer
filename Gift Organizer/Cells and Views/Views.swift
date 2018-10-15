@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddPopupView: UIViewController {
+class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,6 +168,16 @@ class AddPopupView: UIViewController {
         view.layer.borderWidth = 1
         return view
     }()
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        let theinfo:NSDictionary = info as NSDictionary
+        let img:UIImage = theinfo.object(forKey: UIImagePickerController.InfoKey.originalImage) as! UIImage
+        
+        
+        self.imgView.image = img
+        self.dismiss(animated: true, completion: nil)
+        
+    }
 }
 
 class MyTapGuesture: UITapGestureRecognizer {

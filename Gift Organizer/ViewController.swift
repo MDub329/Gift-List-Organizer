@@ -83,27 +83,31 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     @objc func handleImgAdd() {
         let image = UIImagePickerController()
-        image.delegate = self
         image.sourceType = UIImagePickerController.SourceType.photoLibrary
+        image.delegate = self.addPopUpView
         self.addPopUpView.present(image, animated: true, completion: nil)
+        
         
     }
     
     @objc func handleImgEdit() {
         let image = UIImagePickerController()
-        image.delegate = self
         image.sourceType = UIImagePickerController.SourceType.photoLibrary
+        image.delegate = self.editPopUpView
         self.editPopUpView.present(image, animated: true, completion: nil)
+        
         
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let theinfo:NSDictionary = info as NSDictionary
-        let img:UIImage = theinfo.object(forKey: UIImagePickerController.InfoKey.originalImage) as! UIImage
-        self.addPopUpView.imgView.image = img
-        self.addPopUpView.dismiss(animated: true, completion: nil)
-    
-    }
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        let theinfo:NSDictionary = info as NSDictionary
+//        let img:UIImage = theinfo.object(forKey: UIImagePickerController.InfoKey.originalImage) as! UIImage
+//        //
+//
+//        self.addPopUpView.imgView.image = img
+//        self.addPopUpView.dismiss(animated: true, completion: nil)
+//
+//    }
     
     
     
@@ -139,7 +143,27 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     }
     
     @objc func handleUpdate(Sender: MyLongPressGuesture){
-        
+        let index = Sender.indexPath.row
+        if let name = editPopUpView.titleTextField.text {
+            peopleArray[personIndex].giftIdeaList[index].title = name
+        }
+        if let desc = editPopUpView.descTextField.text {
+            peopleArray[personIndex].giftIdeaList[index].description = desc
+        }
+        if var price = editPopUpView.priceTextField.text {
+            if (price.prefix(1) == "$") { //removes the $ from the start of price string
+                price.remove(at: price.startIndex)
+            }
+            if let priceDbl = Double(price){
+                peopleArray[personIndex].giftIdeaList[index].price = priceDbl
+            }
+        }
+        if let link = editPopUpView.urlTextfield.text {
+            peopleArray[personIndex].giftIdeaList[index].link = link
+        }
+        if let img = self.editPopUpView.imgView.image {
+            peopleArray[personIndex].giftIdeaList[index].imageView.image = img
+        }
         
         tableView.reloadSections([0], with: .automatic)
         self.dismiss(animated: true, completion: nil)
