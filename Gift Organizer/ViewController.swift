@@ -150,7 +150,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         //Top left button is pressed
     }
     
-    @objc func checkBoxTap(Sender: MyLongPressGuesture) {
+    @objc func cellTap(Sender: MyLongPressGuesture) {
         if (checkImgNameArray[Sender.indexPath.row] == emptyBox) {
             checkImgNameArray[Sender.indexPath.row] = checkBox
             peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].purchased = true
@@ -162,33 +162,36 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         tableView.reloadData()
     }
 
-    @objc func checkBoxLongTap(Sender: MyLongPressGuesture) {
-        if let window = UIApplication.shared.keyWindow {
-            self.editPopUpView.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-            self.present(self.editPopUpView, animated: true, completion: nil)
-            
-            self.editPopUpView.view.frame = window.frame
-            self.editPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
-            let tapReconizer = MyTapGuesture(target: self, action: #selector(self.handleUpdate(Sender:)))
-            tapReconizer.indexPath = Sender.indexPath
-            self.editPopUpView.saveButton.addGestureRecognizer(tapReconizer)
-            self.editPopUpView.addImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleImgEdit)))
-            //ImagePicker shows below addPopUpView
-            self.editPopUpView.view.alpha = 1
-            self.editPopUpView.addView.centerXAnchor.constraint(equalTo: self.editPopUpView.view.centerXAnchor).isActive = true
-            self.editPopUpView.addView.centerYAnchor.constraint(equalTo:self.editPopUpView.view.centerYAnchor).isActive = true
-            self.editPopUpView.addView.heightAnchor.constraint(equalToConstant: window.frame.width/1.1).isActive = true
-            self.editPopUpView.addView.widthAnchor.constraint(equalToConstant: window.frame.width/1.2).isActive = true
-            self.editPopUpView.saveButton.anchor(top: nil, leading: nil, bottom: self.editPopUpView.addView.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: self.editPopUpView.addView.frame.width/2, height: 50))
-            self.editPopUpView.titleTextField.select(self) //Sets the cursor to titleTextfield
-            
-            let index = Sender.indexPath.row
-            
-            self.editPopUpView.titleTextField.text = peopleArray[personIndex].giftIdeaList[index].title
-            self.editPopUpView.descTextField.text = peopleArray[personIndex].giftIdeaList[index].description
-            self.editPopUpView.priceTextField.text = peopleArray[personIndex].giftIdeaList[index].priceString()
-            self.editPopUpView.urlTextfield.text = peopleArray[personIndex].giftIdeaList[index].link
-            self.editPopUpView.imgView.image = peopleArray[personIndex].giftIdeaList[index].imageView.image
+    @objc func cellLongPress(Sender: MyLongPressGuesture) {
+        if Sender.state == UIGestureRecognizer.State.began {
+            if let window = UIApplication.shared.keyWindow {
+                self.editPopUpView.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+                self.present(self.editPopUpView, animated: true, completion: nil)
+                
+                self.editPopUpView.view.frame = window.frame
+                self.editPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+                let tapReconizer = MyTapGuesture(target: self, action: #selector(self.handleUpdate(Sender:)))
+                tapReconizer.indexPath = Sender.indexPath
+                self.editPopUpView.saveButton.addGestureRecognizer(tapReconizer)
+                
+                self.editPopUpView.addImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleImgEdit)))
+                //ImagePicker shows below addPopUpView
+                self.editPopUpView.view.alpha = 1
+                self.editPopUpView.addView.centerXAnchor.constraint(equalTo: self.editPopUpView.view.centerXAnchor).isActive = true
+                self.editPopUpView.addView.centerYAnchor.constraint(equalTo:self.editPopUpView.view.centerYAnchor).isActive = true
+                self.editPopUpView.addView.heightAnchor.constraint(equalToConstant: window.frame.width/1.1).isActive = true
+                self.editPopUpView.addView.widthAnchor.constraint(equalToConstant: window.frame.width/1.2).isActive = true
+                self.editPopUpView.saveButton.anchor(top: nil, leading: nil, bottom: self.editPopUpView.addView.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: self.editPopUpView.addView.frame.width/2, height: 50))
+                self.editPopUpView.titleTextField.select(self) //Sets the cursor to titleTextfield
+                
+                let index = Sender.indexPath.row
+                
+                self.editPopUpView.titleTextField.text = peopleArray[personIndex].giftIdeaList[index].title
+                self.editPopUpView.descTextField.text = peopleArray[personIndex].giftIdeaList[index].description
+                self.editPopUpView.priceTextField.text = peopleArray[personIndex].giftIdeaList[index].priceString()
+                self.editPopUpView.urlTextfield.text = peopleArray[personIndex].giftIdeaList[index].link
+                self.editPopUpView.imgView.image = peopleArray[personIndex].giftIdeaList[index].imageView.image
+            }
         }
     }
     
@@ -221,10 +224,10 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         myCell.descLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].description
         myCell.itemPicture.image = peopleArray[personIndex].giftIdeaList[indexPath.row].imageView.image
         //sends index to allow for both a long tap and normal tap
-        let tapReconizer = MyTapGuesture(target: self, action: #selector(self.checkBoxTap(Sender: )))
+        let tapReconizer = MyTapGuesture(target: self, action: #selector(self.cellTap))
         tapReconizer.indexPath = indexPath
         myCell.addGestureRecognizer(tapReconizer)
-        let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.checkBoxLongTap(Sender: )))
+        let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.cellLongPress))
         longTapReconizer.indexPath = indexPath
         longTapReconizer.minimumPressDuration = 0.7
         myCell.addGestureRecognizer(longTapReconizer)
