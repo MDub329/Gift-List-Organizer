@@ -109,13 +109,16 @@ class FooterCell: UITableViewHeaderFooterView {
         addSubview(totalGiftsLabel)
         addSubview(totalGiftTitleLabel)
         addSubview(totalSpentLabel)
+        addSubview(totalSpentTitleLabel)
         
-        totalGiftsLabel.anchor(top: self.topAnchor, leading: nil, bottom: self.bottomAnchor, trailing: nil,padding: .init(top: 5, left: 5, bottom: 5, right: 0))
+        totalGiftsLabel.anchor(top: self.topAnchor, leading: nil, bottom: self.bottomAnchor, trailing: nil ,padding: .init(top: 0, left: 0, bottom: 0, right: 0))
         totalGiftsLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        totalGiftTitleLabel.centerYAnchor.constraint(equalTo: self.totalGiftsLabel.centerYAnchor).isActive = true
-        totalGiftTitleLabel.anchor(top: self.topAnchor, leading: nil, bottom: self.bottomAnchor, trailing: self.totalGiftsLabel.leadingAnchor, padding: .init(top: 5, left: 0, bottom: 5, right: 10))
         
-        totalSpentLabel.anchor(top: self.topAnchor, leading: self.totalGiftsLabel.trailingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor,padding: .init(top: 5, left: 60, bottom: 5, right: 0))
+        totalGiftTitleLabel.centerYAnchor.constraint(equalTo: self.totalGiftsLabel.centerYAnchor).isActive = true
+        totalGiftTitleLabel.anchor(top: self.topAnchor, leading: nil, bottom: self.bottomAnchor, trailing: self.totalGiftsLabel.leadingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 5))
+        
+        totalSpentLabel.anchor(top: self.topAnchor, leading: self.totalSpentTitleLabel.trailingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor,padding: .init(top: 0, left: 60, bottom: 0, right: 10))
+        totalSpentTitleLabel.anchor(top: self.totalSpentLabel.topAnchor, leading: self.totalGiftsLabel.trailingAnchor, bottom: self.totalSpentLabel.bottomAnchor, trailing: self.totalSpentLabel.leadingAnchor, padding: .init(top: 0, left: 45, bottom: 0, right: 0))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -145,6 +148,15 @@ class FooterCell: UITableViewHeaderFooterView {
         lbl.text = "Total Gifts:"
         lbl.font = lbl.font.withSize(14)
         lbl.backgroundColor = .blue
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
+    let totalSpentTitleLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "Total Spent:"
+        lbl.font = lbl.font.withSize(14)
+        lbl.backgroundColor = .red
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()

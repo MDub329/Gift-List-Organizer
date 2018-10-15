@@ -14,6 +14,8 @@ class People {
     var giftIdeaList = [GiftIdeas]()
     var totalBudget = 0.0
     var spentBudget = 0.0
+    var imageView = UIImageView()
+    
     
     init() {
         //giftIdeaList.append(GiftIdeas())

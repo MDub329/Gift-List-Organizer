@@ -169,3 +169,10 @@ class AddPopupView: UIViewController {
         return view
     }()
 }
+
+class MyTapGuesture: UITapGestureRecognizer {
+    var indexPath = IndexPath()
+}
+class MyLongPressGuesture: UILongPressGestureRecognizer {
+    var indexPath = IndexPath()
+}

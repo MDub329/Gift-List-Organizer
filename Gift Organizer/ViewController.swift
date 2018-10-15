@@ -21,6 +21,8 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     var checkImgNameArray = ["Checkmarkempty","Checkmarkempty"]
     
     var peopleArray = [People]()
+    let addPopUpView = AddPopupView()
+    let editPopUpView = AddPopupView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,7 +36,8 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         peopleArray.append(People())
         calcSpent()
         //self.tableView.isEditing = true
-        
+        #warning("For Testing")
+        peopleArray[0].totalBudget = 100
         
     }
 
@@ -44,12 +47,12 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(HomeController.handleMore))
     }
     
-    let addPopUpView = AddPopupView()
     
     @objc func handleAdd(){
         //add button is pressed
         
         if let window = UIApplication.shared.keyWindow {
+            self.addPopUpView.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
             self.present(addPopUpView, animated: true, completion: nil)
             
             self.addPopUpView.view.frame = window.frame
@@ -84,7 +87,13 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         image.sourceType = UIImagePickerController.SourceType.photoLibrary
         self.addPopUpView.present(image, animated: true, completion: nil)
         
-        
+    }
+    
+    @objc func handleImgEdit() {
+        let image = UIImagePickerController()
+        image.delegate = self
+        image.sourceType = UIImagePickerController.SourceType.photoLibrary
+        self.editPopUpView.present(image, animated: true, completion: nil)
         
     }
     
@@ -93,9 +102,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         let img:UIImage = theinfo.object(forKey: UIImagePickerController.InfoKey.originalImage) as! UIImage
         self.addPopUpView.imgView.image = img
         self.addPopUpView.dismiss(animated: true, completion: nil)
-        
-
-        
+    
     }
     
     
@@ -131,14 +138,59 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         
     }
     
+    @objc func handleUpdate(Sender: MyLongPressGuesture){
+        
+        
+        tableView.reloadSections([0], with: .automatic)
+        self.dismiss(animated: true, completion: nil)
+        
+    }
+    
     @objc func handleMore(){
         //Top left button is pressed
     }
     
-    @objc func checkBoxTap() {
-      
+    @objc func checkBoxTap(Sender: MyLongPressGuesture) {
+        if (checkImgNameArray[Sender.indexPath.row] == emptyBox) {
+            checkImgNameArray[Sender.indexPath.row] = checkBox
+            peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].purchased = true
+        } else {
+            checkImgNameArray[Sender.indexPath.row] = emptyBox
+            peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].purchased = false
+        }
+        calcSpent()
+        tableView.reloadData()
     }
 
+    @objc func checkBoxLongTap(Sender: MyLongPressGuesture) {
+        if let window = UIApplication.shared.keyWindow {
+            self.editPopUpView.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+            self.present(self.editPopUpView, animated: true, completion: nil)
+            
+            self.editPopUpView.view.frame = window.frame
+            self.editPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+            let tapReconizer = MyTapGuesture(target: self, action: #selector(self.handleUpdate(Sender:)))
+            tapReconizer.indexPath = Sender.indexPath
+            self.editPopUpView.saveButton.addGestureRecognizer(tapReconizer)
+            self.editPopUpView.addImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleImgEdit)))
+            //ImagePicker shows below addPopUpView
+            self.editPopUpView.view.alpha = 1
+            self.editPopUpView.addView.centerXAnchor.constraint(equalTo: self.editPopUpView.view.centerXAnchor).isActive = true
+            self.editPopUpView.addView.centerYAnchor.constraint(equalTo:self.editPopUpView.view.centerYAnchor).isActive = true
+            self.editPopUpView.addView.heightAnchor.constraint(equalToConstant: window.frame.width/1.1).isActive = true
+            self.editPopUpView.addView.widthAnchor.constraint(equalToConstant: window.frame.width/1.2).isActive = true
+            self.editPopUpView.saveButton.anchor(top: nil, leading: nil, bottom: self.editPopUpView.addView.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: self.editPopUpView.addView.frame.width/2, height: 50))
+            self.editPopUpView.titleTextField.select(self) //Sets the cursor to titleTextfield
+            
+            let index = Sender.indexPath.row
+            
+            self.editPopUpView.titleTextField.text = peopleArray[personIndex].giftIdeaList[index].title
+            self.editPopUpView.descTextField.text = peopleArray[personIndex].giftIdeaList[index].description
+            self.editPopUpView.priceTextField.text = peopleArray[personIndex].giftIdeaList[index].priceString()
+            self.editPopUpView.urlTextfield.text = peopleArray[personIndex].giftIdeaList[index].link
+            self.editPopUpView.imgView.image = peopleArray[personIndex].giftIdeaList[index].imageView.image
+        }
+    }
     
     func arrayTesting() {
         peopleArray.append(People())
@@ -168,7 +220,14 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         myCell.titleLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].title
         myCell.descLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].description
         myCell.itemPicture.image = peopleArray[personIndex].giftIdeaList[indexPath.row].imageView.image
-        myCell.checkBoxLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.checkBoxTap)))
+        //sends index to allow for both a long tap and normal tap
+        let tapReconizer = MyTapGuesture(target: self, action: #selector(self.checkBoxTap(Sender: )))
+        tapReconizer.indexPath = indexPath
+        myCell.addGestureRecognizer(tapReconizer)
+        let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.checkBoxLongTap(Sender: )))
+        longTapReconizer.indexPath = indexPath
+        longTapReconizer.minimumPressDuration = 0.7
+        myCell.addGestureRecognizer(longTapReconizer)
         return myCell
     }
     
@@ -178,6 +237,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         myHeader.backgroundView?.backgroundColor = .white
         myHeader.totalBudgetLabel.text = peopleArray[personIndex].totalToString()
         myHeader.remainingLabel.text = peopleArray[personIndex].calcRemainingBudgetString()
+        myHeader.profilePicture.image = peopleArray[personIndex].imageView.image
         
         return myHeader
     }
@@ -196,22 +256,27 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 90
     }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 40
+    }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return peopleArray[section].giftIdeaList.count
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (checkImgNameArray[indexPath.row] == emptyBox) {
-            checkImgNameArray[indexPath.row] = checkBox
-            peopleArray[personIndex].giftIdeaList[indexPath.row].purchased = true
-        } else {
-            checkImgNameArray[indexPath.row] = emptyBox
-            peopleArray[personIndex].giftIdeaList[indexPath.row].purchased = false
-        }
-        calcSpent()
-        tableView.reloadData()
-    }
-    
+//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//
+//        if (checkImgNameArray[indexPath.row] == emptyBox) {
+//            checkImgNameArray[indexPath.row] = checkBox
+//            peopleArray[personIndex].giftIdeaList[indexPath.row].purchased = true
+//        } else {
+//            checkImgNameArray[indexPath.row] = emptyBox
+//            peopleArray[personIndex].giftIdeaList[indexPath.row].purchased = false
+//        }
+//        calcSpent()
+//        tableView.reloadData()
+//    }
+//
     override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
     }
