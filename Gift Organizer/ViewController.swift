@@ -41,15 +41,14 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         
     }
 
+    //adds buttons to navBar
     func setUpNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(HomeController.handleAdd))
-        
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(HomeController.handleMore))
     }
     
-    
+    //add button is pressed
     @objc func handleAdd(){
-        //add button is pressed
         
         if let window = UIApplication.shared.keyWindow {
             self.addPopUpView.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
@@ -73,44 +72,26 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             self.addPopUpView.priceTextField.text = ""
             self.addPopUpView.urlTextfield.text = ""
             self.addPopUpView.imgView.image = nil
-            
-
-//            UIView.animate(withDuration: 0.5) {
-//                self.addPopUpView.view.alpha = 1
-//            }
         }
     }
     
+    //handles the addImage button press
     @objc func handleImgAdd() {
         let image = UIImagePickerController()
         image.sourceType = UIImagePickerController.SourceType.photoLibrary
         image.delegate = self.addPopUpView
         self.addPopUpView.present(image, animated: true, completion: nil)
-        
-        
     }
     
+    //handles the editImage button press
     @objc func handleImgEdit() {
         let image = UIImagePickerController()
         image.sourceType = UIImagePickerController.SourceType.photoLibrary
         image.delegate = self.editPopUpView
         self.editPopUpView.present(image, animated: true, completion: nil)
-        
-        
     }
     
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        let theinfo:NSDictionary = info as NSDictionary
-//        let img:UIImage = theinfo.object(forKey: UIImagePickerController.InfoKey.originalImage) as! UIImage
-//        //
-//
-//        self.addPopUpView.imgView.image = img
-//        self.addPopUpView.dismiss(animated: true, completion: nil)
-//
-//    }
-    
-    
-    
+    //handles Save Button press
     @objc func handleSave(){
         let newGift = GiftIdeas()
         if let name = addPopUpView.titleTextField.text {
@@ -131,17 +112,12 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         
         peopleArray[personIndex].giftIdeaList.append(newGift)
         checkImgNameArray.append(emptyBox)
-        
-//        UIView.animate(withDuration: 0.5) {
-//            self.addPopUpView.view.alpha = 0
-//        }
-        //let index = IndexPath(row: peopleArray[personIndex].giftIdeaList.count-1, section: 0)
-        //tableView.insertRows(at: [index], with: .automatic)
         tableView.reloadSections([0], with: .automatic)
         self.dismiss(animated: true, completion: nil)
         
     }
     
+    //handles Edit Button press
     @objc func handleUpdate(Sender: MyLongPressGuesture){
         let index = Sender.indexPath.row
         if let name = editPopUpView.titleTextField.text {
@@ -170,10 +146,12 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         
     }
     
+    //Top left button is pressed
     @objc func handleMore(){
-        //Top left button is pressed
+        
     }
     
+    //Cell is tapped
     @objc func cellTap(Sender: MyLongPressGuesture) {
         if (checkImgNameArray[Sender.indexPath.row] == emptyBox) {
             checkImgNameArray[Sender.indexPath.row] = checkBox
@@ -186,6 +164,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         tableView.reloadData()
     }
 
+    //Cell is Long Pressed
     @objc func cellLongPress(Sender: MyLongPressGuesture) {
         if Sender.state == UIGestureRecognizer.State.began {
             if let window = UIApplication.shared.keyWindow {
@@ -219,6 +198,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         }
     }
     
+    #warning("Used for Testing")
     func arrayTesting() {
         peopleArray.append(People())
         let testString = "This is a place holder description text.  This is where a dscription of the item will be."
@@ -228,6 +208,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         peopleArray[personIndex].totalBudget = 350
     }
     
+    //Calculates the amount spent
     func calcSpent() {
         var sum = 0.0
         if (!peopleArray[personIndex].giftIdeaList.isEmpty){
@@ -291,25 +272,35 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         return peopleArray[section].giftIdeaList.count
     }
     
-//    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//
-//        if (checkImgNameArray[indexPath.row] == emptyBox) {
-//            checkImgNameArray[indexPath.row] = checkBox
-//            peopleArray[personIndex].giftIdeaList[indexPath.row].purchased = true
-//        } else {
-//            checkImgNameArray[indexPath.row] = emptyBox
-//            peopleArray[personIndex].giftIdeaList[indexPath.row].purchased = false
-//        }
-//        calcSpent()
-//        tableView.reloadData()
+//    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+//        return .none
 //    }
-//
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .none
-    }
     
     override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCell.EditingStyle.delete) {
+            let alert = UIAlertController(title: "Delete", message: "Are you sure you want to Delete?", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                //works may be a better way
+                CATransaction.begin()
+                tableView.beginUpdates()
+                self.peopleArray[self.personIndex].giftIdeaList.remove(at: indexPath.row)
+                CATransaction.setCompletionBlock {
+                    self.calcSpent()
+                    tableView.reloadData()
+                }
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                tableView.endUpdates()
+                CATransaction.commit()
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
