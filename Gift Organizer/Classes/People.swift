@@ -36,5 +36,10 @@ class People {
         let strFormated = String(format: "%.2f", spentBudget)
         return "$\(strFormated)"
     }
+    
+    func countToString() -> String{
+        let countStr = String(self.giftIdeaList.count)
+        return countStr
+    }
 }
 

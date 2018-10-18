@@ -18,7 +18,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     let personIndex = 0
     
-    var checkImgNameArray = ["Checkmarkempty","Checkmarkempty"]
+    var checkImgNameArray = [String]()
     
     var peopleArray = [People]()
     let addPopUpView = AddPopupView()
@@ -34,7 +34,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         setUpNavBar()
         //arrayTesting()
         peopleArray.append(People())
-        calcSpent()
+        peopleArray[personIndex].spentBudget = calcSpent()
         //self.tableView.isEditing = true
         #warning("For Testing")
         peopleArray[0].totalBudget = 100
@@ -58,7 +58,6 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             self.addPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
             self.addPopUpView.saveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleSave)))
             self.addPopUpView.addImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleImgAdd)))
-            //ImagePicker shows below addPopUpView
             self.addPopUpView.view.alpha = 1
             self.addPopUpView.addView.centerXAnchor.constraint(equalTo: self.addPopUpView.view.centerXAnchor).isActive = true
             self.addPopUpView.addView.centerYAnchor.constraint(equalTo:self.addPopUpView.view.centerYAnchor).isActive = true
@@ -160,7 +159,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             checkImgNameArray[Sender.indexPath.row] = emptyBox
             peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].purchased = false
         }
-        calcSpent()
+        peopleArray[personIndex].spentBudget = calcSpent()
         tableView.reloadData()
     }
 
@@ -209,7 +208,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     }
     
     //Calculates the amount spent
-    func calcSpent() {
+    func calcSpent() -> Double{
         var sum = 0.0
         if (!peopleArray[personIndex].giftIdeaList.isEmpty){
             for item in peopleArray[personIndex].giftIdeaList {
@@ -218,7 +217,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
                 }
             }
         }
-        peopleArray[personIndex].spentBudget = sum
+        return sum
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -228,6 +227,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         myCell.titleLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].title
         myCell.descLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].description
         myCell.itemPicture.image = peopleArray[personIndex].giftIdeaList[indexPath.row].imageView.image
+        
         //sends index to allow for both a long tap and normal tap
         let tapReconizer = MyTapGuesture(target: self, action: #selector(self.cellTap))
         tapReconizer.indexPath = indexPath
@@ -235,12 +235,15 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.cellLongPress))
         longTapReconizer.indexPath = indexPath
         longTapReconizer.minimumPressDuration = 0.7
-        myCell.addGestureRecognizer(longTapReconizer)
+        myCell.addGestureRecognizer(longTapReconizer
+        )
         return myCell
     }
     
+    var myHeader = HeaderCell()
+    
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let myHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! HeaderCell
+        myHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! HeaderCell
         myHeader.backgroundView = UIView(frame: myHeader.bounds)
         myHeader.backgroundView?.backgroundColor = .white
         myHeader.totalBudgetLabel.text = peopleArray[personIndex].totalToString()
@@ -250,8 +253,10 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         return myHeader
     }
     
+    var myFooter = FooterCell()
+    
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let myFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerId) as! FooterCell
+        myFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerId) as! FooterCell
         myFooter.totalGiftsLabel.text = String(peopleArray[personIndex].giftIdeaList.count)
         myFooter.totalSpentLabel.text = peopleArray[personIndex].spentToString()
         return myFooter
@@ -272,10 +277,6 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         return peopleArray[section].giftIdeaList.count
     }
     
-//    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-//        return .none
-//    }
-    
     override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
         return false
     }
@@ -284,17 +285,23 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
             let alert = UIAlertController(title: "Delete", message: "Are you sure you want to Delete?", preferredStyle: UIAlertController.Style.alert)
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
-                //works may be a better way
-                CATransaction.begin()
-                tableView.beginUpdates()
-                self.peopleArray[self.personIndex].giftIdeaList.remove(at: indexPath.row)
-                CATransaction.setCompletionBlock {
-                    self.calcSpent()
-                    tableView.reloadData()
-                }
+
+                //Clean up calls with this Constant
+                let dataLoc =  self.peopleArray[self.personIndex]
+                
+                dataLoc.giftIdeaList.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
-                tableView.endUpdates()
-                CATransaction.commit()
+                dataLoc.spentBudget = self.calcSpent()
+                
+                //Update Header
+                self.myHeader.updateHeader(budgetTotal: dataLoc.totalToString(), budgetLeft: dataLoc.calcRemainingBudgetString())
+                
+                //Update Footer
+                self.myFooter.updateFooter(totalSpent: dataLoc.spentToString(), totalCount: dataLoc.countToString())
+                
+                //Remove checkBox from array
+                self.checkImgNameArray.removeLast()
+                
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
                 
@@ -302,5 +309,8 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             self.present(alert, animated: true, completion: nil)
         }
     }
+    
+    //Pushes View up with keyboard
+    
 }
 

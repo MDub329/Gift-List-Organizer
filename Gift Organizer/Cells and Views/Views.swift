@@ -24,8 +24,13 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.addView.addSubview(urlTextfield)
         self.addView.addSubview(addImgButton)
         self.addView.addSubview(imgView)
+        self.hideKeyboardWhenTappedAround()
         
-        
+        setUpConstraints()
+
+    }
+    
+    func setUpConstraints() {
         saveButton.anchor(top: nil, leading: nil, bottom: addView.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 5, right: 0), size: .init(width: 100, height: 100))
         saveButton.centerXAnchor.constraint(equalTo: addView.centerXAnchor).isActive = true
         
@@ -43,13 +48,10 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         
         addImgButton.anchor(top: self.urlLabel.bottomAnchor, leading: self.urlLabel.leadingAnchor, bottom: self.saveButton.topAnchor, trailing: nil,padding: .init(top: 50, left: 0, bottom: 50, right: 0), size: .init(width: 100, height: 30))
         imgView.anchor(top: self.urlLabel.bottomAnchor, leading: self.addImgButton.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 20, left: 20, bottom: 20, right: 20), size: .init(width: 100, height: 100))
-
     }
     
-//    required init?(coder aDecoder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
-//    
+    
+    
     let addView: UIView = {
         let view = UIView()
         //view.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
@@ -179,6 +181,7 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         
     }
 }
+
 
 class MyTapGuesture: UITapGestureRecognizer {
     var indexPath = IndexPath()

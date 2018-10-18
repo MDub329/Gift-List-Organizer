@@ -72,15 +72,14 @@ extension UIView {
 
 
 extension UIViewController {
-    func setupGradient() {
-        let gradientLayer = CAGradientLayer()
-        let topColor = UIColor.rgb(r: 68, g: 80, b: 95).cgColor
-        let bottomColor = UIColor.rgb(r: 49, g: 60, b: 76).cgColor
-        gradientLayer.colors = [topColor, bottomColor]
-        gradientLayer.locations = [0, 1]
-        
-        view.layer.addSublayer(gradientLayer)
-        gradientLayer.frame = view.bounds
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 

@@ -8,11 +8,17 @@
 
 import UIKit
 
+//Header Cell Class
 class HeaderCell: UITableViewHeaderFooterView {
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    //Allows header to be updated
+    func updateHeader(budgetTotal: String, budgetLeft: String) {
+        self.totalBudgetLabel.text = budgetTotal
+        self.remainingLabel.text = budgetLeft
     }
     
     let profilePicture: UIImageView = {
@@ -22,7 +28,7 @@ class HeaderCell: UITableViewHeaderFooterView {
         img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         img.layer.cornerRadius = img.frame.size.height/2
         img.translatesAutoresizingMaskIntoConstraints = false
-        
+        img.clipsToBounds = true
         img.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1)
         return img
     }()
@@ -79,6 +85,9 @@ class HeaderCell: UITableViewHeaderFooterView {
         self.addSubview(remainingTitleLabel)
         self.addSubview(budgetTitleLabel)
         
+        profilePicture.clipsToBounds = true
+        profilePicture.layer.masksToBounds = false
+        
         profilePicture.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: 50, height: 50))
         profilePicture.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
@@ -102,6 +111,7 @@ class HeaderCell: UITableViewHeaderFooterView {
     
 }
 
+//Footer Cell Class
 class FooterCell: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
@@ -123,6 +133,11 @@ class FooterCell: UITableViewHeaderFooterView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func updateFooter(totalSpent: String, totalCount: String) {
+        totalSpentLabel.text = totalSpent
+        totalGiftsLabel.text = totalCount
     }
     
     let totalSpentLabel: UILabel = {
@@ -163,18 +178,19 @@ class FooterCell: UITableViewHeaderFooterView {
     
 }
 
+
+//Gift Cell Class
 class GiftIdeaCell: UITableViewCell {
     
     var imgSize = 50
     
     let itemPicture: UIImageView = {
         let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
-        //img.layer.borderWidth = 1.0
-        //img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        img.layer.borderWidth = 1.0
+        img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        img.layer.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         img.layer.cornerRadius = img.frame.size.height/2
         img.translatesAutoresizingMaskIntoConstraints = false
-        img.clipsToBounds = true
-        img.layer.masksToBounds = false
         return img
     }()
     
@@ -220,6 +236,9 @@ class GiftIdeaCell: UITableViewCell {
         self.addSubview(descLabel)
         self.addSubview(priceLabel)
         self.addSubview(checkBoxLabel)
+        
+        itemPicture.layer.masksToBounds = false
+        itemPicture.clipsToBounds = true
         
         itemPicture.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: imgSize, height: imgSize))
         titleLabel.anchor(top: self.itemPicture.topAnchor, leading: self.itemPicture.trailingAnchor, bottom: nil, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 5, left: 10, bottom: 0, right: 15))
