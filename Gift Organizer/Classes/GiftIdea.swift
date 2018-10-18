@@ -17,14 +17,16 @@ class GiftIdeas {
     var price = 0.0
     var purchased = false
     var link = ""
+    var purchImage = "Checkmarkempty"
     
-    init(img: UIImage, ttl: String, desc: String, prc: Double, purch: Bool, lnk: String) {
+    init(img: UIImage, ttl: String, desc: String, prc: Double, purch: Bool, lnk: String, purchString: String) {
         imageView.image = img
         title = ttl
         description = desc
         price = prc
         purchased = purch
         link = lnk
+        purchImage = purchString
     }
     
     init() {

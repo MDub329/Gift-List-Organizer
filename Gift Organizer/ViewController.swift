@@ -18,8 +18,6 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     let personIndex = 0
     
-    var checkImgNameArray = [String]()
-    
     var peopleArray = [People]()
     let addPopUpView = AddPopupView()
     let editPopUpView = AddPopupView()
@@ -108,9 +106,10 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         if let img = self.addPopUpView.imgView.image {
             newGift.imageView.image = img
         }
+        newGift.purchImage = emptyBox
         
         peopleArray[personIndex].giftIdeaList.append(newGift)
-        checkImgNameArray.append(emptyBox)
+        //checkImgNameArray.append(emptyBox)
         tableView.reloadSections([0], with: .automatic)
         self.dismiss(animated: true, completion: nil)
         
@@ -152,12 +151,13 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     //Cell is tapped
     @objc func cellTap(Sender: MyLongPressGuesture) {
-        if (checkImgNameArray[Sender.indexPath.row] == emptyBox) {
-            checkImgNameArray[Sender.indexPath.row] = checkBox
-            peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].purchased = true
+        let dataLoc =  self.peopleArray[self.personIndex].giftIdeaList[Sender.indexPath.row]
+        if (dataLoc.purchImage == emptyBox) {
+            dataLoc.purchImage = checkBox
+            dataLoc.purchased = true
         } else {
-            checkImgNameArray[Sender.indexPath.row] = emptyBox
-            peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].purchased = false
+            dataLoc.purchImage = emptyBox
+            dataLoc.purchased = false
         }
         peopleArray[personIndex].spentBudget = calcSpent()
         tableView.reloadData()
@@ -201,9 +201,9 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     func arrayTesting() {
         peopleArray.append(People())
         let testString = "This is a place holder description text.  This is where a dscription of the item will be."
-        let giftTest = GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "ATH-M50x", desc: testString, prc: 10.00, purch: false, lnk: "")
+        let giftTest = GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "ATH-M50x", desc: testString, prc: 10.00, purch: false, lnk: "", purchString: emptyBox)
         peopleArray[personIndex].giftIdeaList.append(giftTest)
-        peopleArray[personIndex].giftIdeaList.append(GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "Test String2", desc: "Test Desc2", prc: 20.00, purch: false, lnk: ""))
+        peopleArray[personIndex].giftIdeaList.append(GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "Test String2", desc: "Test Desc2", prc: 20.00, purch: false, lnk: "", purchString: emptyBox))
         peopleArray[personIndex].totalBudget = 350
     }
     
@@ -222,7 +222,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let myCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! GiftIdeaCell
-        myCell.checkBoxLabel.image = UIImage(named: checkImgNameArray[indexPath.row])
+        myCell.checkBoxLabel.image = UIImage(named: peopleArray[personIndex].giftIdeaList[indexPath.row].purchImage)
         myCell.priceLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].priceString()
         myCell.titleLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].title
         myCell.descLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].description
@@ -299,9 +299,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
                 //Update Footer
                 self.myFooter.updateFooter(totalSpent: dataLoc.spentToString(), totalCount: dataLoc.countToString())
                 
-                //Remove checkBox from array
-                self.checkImgNameArray.removeLast()
-                
+    
             }))
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
                 
