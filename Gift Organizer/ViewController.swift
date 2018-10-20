@@ -33,7 +33,6 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         //arrayTesting()
         peopleArray.append(People())
         peopleArray[personIndex].spentBudget = calcSpent()
-        //self.tableView.isEditing = true
         #warning("For Testing")
         peopleArray[0].totalBudget = 100
         
@@ -53,15 +52,12 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             self.present(addPopUpView, animated: true, completion: nil)
             
             self.addPopUpView.view.frame = window.frame
-            self.addPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
             self.addPopUpView.saveButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleSave)))
             self.addPopUpView.addImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleImgAdd)))
-            self.addPopUpView.view.alpha = 1
-            self.addPopUpView.addView.centerXAnchor.constraint(equalTo: self.addPopUpView.view.centerXAnchor).isActive = true
-            self.addPopUpView.addView.centerYAnchor.constraint(equalTo:self.addPopUpView.view.centerYAnchor).isActive = true
+            self.addPopUpView.cancelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleDismiss)))
             self.addPopUpView.addView.heightAnchor.constraint(equalToConstant: window.frame.width/1.1).isActive = true
             self.addPopUpView.addView.widthAnchor.constraint(equalToConstant: window.frame.width/1.2).isActive = true
-            self.addPopUpView.saveButton.anchor(top: nil, leading: nil, bottom: self.addPopUpView.addView.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: self.addPopUpView.addView.frame.width/2, height: 50))
+            
             self.addPopUpView.titleTextField.select(self) //Sets the cursor to titleTextfield
             
             self.addPopUpView.titleTextField.text = ""
@@ -144,6 +140,11 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         
     }
     
+    //Handles Cancel Button
+    @objc func handleDismiss() {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     //Top left button is pressed
     @objc func handleMore(){
         
@@ -171,19 +172,17 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
                 self.present(self.editPopUpView, animated: true, completion: nil)
                 
                 self.editPopUpView.view.frame = window.frame
-                self.editPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+                //self.editPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
                 let tapReconizer = MyTapGuesture(target: self, action: #selector(self.handleUpdate(Sender:)))
                 tapReconizer.indexPath = Sender.indexPath
                 self.editPopUpView.saveButton.addGestureRecognizer(tapReconizer)
                 
                 self.editPopUpView.addImgButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleImgEdit)))
-                //ImagePicker shows below addPopUpView
-                self.editPopUpView.view.alpha = 1
-                self.editPopUpView.addView.centerXAnchor.constraint(equalTo: self.editPopUpView.view.centerXAnchor).isActive = true
-                self.editPopUpView.addView.centerYAnchor.constraint(equalTo:self.editPopUpView.view.centerYAnchor).isActive = true
+                self.editPopUpView.cancelButton.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleDismiss)))
+                
                 self.editPopUpView.addView.heightAnchor.constraint(equalToConstant: window.frame.width/1.1).isActive = true
                 self.editPopUpView.addView.widthAnchor.constraint(equalToConstant: window.frame.width/1.2).isActive = true
-                self.editPopUpView.saveButton.anchor(top: nil, leading: nil, bottom: self.editPopUpView.addView.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0), size: .init(width: self.editPopUpView.addView.frame.width/2, height: 50))
+              
                 self.editPopUpView.titleTextField.select(self) //Sets the cursor to titleTextfield
                 
                 let index = Sender.indexPath.row
@@ -235,8 +234,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.cellLongPress))
         longTapReconizer.indexPath = indexPath
         longTapReconizer.minimumPressDuration = 0.7
-        myCell.addGestureRecognizer(longTapReconizer
-        )
+        myCell.addGestureRecognizer(longTapReconizer)
         return myCell
     }
     
@@ -309,6 +307,12 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     }
     
     //Pushes View up with keyboard
+    @objc func keyboardWillShow(notification: NSNotification) {
+        //Push view up somehow
+    }
     
+    @objc func keyboardWillHide(notification: NSNotification) {
+        //Pull view back down somehow
+    }
 }
 

@@ -13,7 +13,8 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(addView)
-        self.view.addSubview(saveButton)
+        self.addView.addSubview(saveButton)
+        self.addView.addSubview(cancelButton)
         self.addView.addSubview(titleLabel)
         self.addView.addSubview(descLabel)
         self.addView.addSubview(priceLabel)
@@ -27,12 +28,20 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.hideKeyboardWhenTappedAround()
         
         setUpConstraints()
+        view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        
+        
+        
 
     }
     
+
+    
     func setUpConstraints() {
-        saveButton.anchor(top: nil, leading: nil, bottom: addView.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 5, right: 0), size: .init(width: 100, height: 100))
-        saveButton.centerXAnchor.constraint(equalTo: addView.centerXAnchor).isActive = true
+        saveButton.anchor(top: self.imgView.bottomAnchor, leading: self.addView.leadingAnchor, bottom: self.addView.bottomAnchor, trailing: self.cancelButton.leadingAnchor, padding: .init(top: 5, left: 65, bottom: 5, right: 10))
+        
+        cancelButton.anchor(top: self.imgView.bottomAnchor, leading: self.saveButton.trailingAnchor, bottom: self.addView.bottomAnchor, trailing: self.addView.trailingAnchor, padding: .init(top: 5, left: 10, bottom: 5, right: 65))
+        //saveButton.centerXAnchor.constraint(equalTo: addView.centerXAnchor).isActive = true
         
         titleLabel.anchor(top: self.addView.topAnchor, leading: self.addView.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 15, left: 25, bottom: 0, right: 0), size: .init(width: 50, height: 30))
         titleTextField.anchor(top: self.titleLabel.topAnchor, leading: self.titleLabel.trailingAnchor, bottom: self.titleLabel.bottomAnchor, trailing: self.addView.trailingAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 35))
@@ -48,6 +57,9 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         
         addImgButton.anchor(top: self.urlLabel.bottomAnchor, leading: self.urlLabel.leadingAnchor, bottom: self.saveButton.topAnchor, trailing: nil,padding: .init(top: 50, left: 0, bottom: 50, right: 0), size: .init(width: 100, height: 30))
         imgView.anchor(top: self.urlLabel.bottomAnchor, leading: self.addImgButton.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 20, left: 20, bottom: 20, right: 20), size: .init(width: 100, height: 100))
+        
+        addView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        addView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
     
@@ -71,6 +83,16 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.layer.cornerRadius = 5
         btn.backgroundColor = .blue
+        return btn
+    }()
+    
+    let cancelButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Cancel", for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitleColor(.blue, for: .normal)
+        //btn.backgroundColor = #colorLiteral(red: 0.5725490451, green: 0, blue: 0.2313725501, alpha: 1)
+        btn.clipsToBounds = true
         return btn
     }()
     
