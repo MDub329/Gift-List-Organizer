@@ -147,7 +147,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     //Top left button is pressed
     @objc func handleMore(){
-        
+        //Top left Btn is pressed
     }
     
     //Cell is tapped
@@ -196,6 +196,23 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         }
     }
     
+    @objc func handleLinkTap(Sender: MyTapGuesture) {
+        let linkStr = peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].link
+        guard let url = URL(string: linkStr) else {
+            //display something for a Failed URL
+            let alert = UIAlertController(title: "Incorrect URL Format", message: "Make sure the URL is in the corect format.  EX: https://www.google.com", preferredStyle: .alert)
+            
+            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+            
+            self.present(alert, animated: true)
+            
+            return
+        }
+        UIApplication.shared.open(url)
+            
+        
+    }
+    
     #warning("Used for Testing")
     func arrayTesting() {
         peopleArray.append(People())
@@ -231,10 +248,15 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         let tapReconizer = MyTapGuesture(target: self, action: #selector(self.cellTap))
         tapReconizer.indexPath = indexPath
         myCell.addGestureRecognizer(tapReconizer)
+        
         let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.cellLongPress))
         longTapReconizer.indexPath = indexPath
         longTapReconizer.minimumPressDuration = 0.7
         myCell.addGestureRecognizer(longTapReconizer)
+        
+        let linkTapReconizer = MyTapGuesture(target: self, action: #selector(self.handleLinkTap))
+        linkTapReconizer.indexPath = indexPath
+        myCell.linkButton.addGestureRecognizer(linkTapReconizer)
         return myCell
     }
     

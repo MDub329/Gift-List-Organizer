@@ -225,7 +225,17 @@ class GiftIdeaCell: UITableViewCell {
         checkBLbl.image = UIImage(named: "Checkmarkempty")
         checkBLbl.translatesAutoresizingMaskIntoConstraints = false
         //checkBLbl.backgroundColor = .red
+        
         return checkBLbl
+    }()
+    
+    let linkButton: UIButton = {
+        let btn = UIButton()
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("Link", for: .normal)
+        btn.setTitleColor(#colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1), for: .normal)
+        //btn.backgroundColor = #colorLiteral(red: 0.9254902005, green: 0.2352941185, blue: 0.1019607857, alpha: 1)
+        return btn
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -235,18 +245,20 @@ class GiftIdeaCell: UITableViewCell {
         self.addSubview(descLabel)
         self.addSubview(priceLabel)
         self.addSubview(checkBoxLabel)
+        self.addSubview(linkButton)
         
         itemPicture.layer.masksToBounds = false
         itemPicture.clipsToBounds = true
         
         itemPicture.anchor(top: self.topAnchor, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: imgSize, height: imgSize))
-        titleLabel.anchor(top: self.itemPicture.topAnchor, leading: self.itemPicture.trailingAnchor, bottom: nil, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 5, left: 10, bottom: 0, right: 15))
+        titleLabel.anchor(top: self.itemPicture.topAnchor, leading: self.itemPicture.trailingAnchor, bottom: nil, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 5, left: 10, bottom: 0, right: 55))
         descLabel.anchor(top: self.titleLabel.bottomAnchor, leading: self.titleLabel.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 3, left: 0, bottom: 0, right: 0), size: .init(width: 225, height: 35))
-        priceLabel.anchor(top: self.titleLabel.topAnchor, leading: nil, bottom: nil, trailing: self.checkBoxLabel.leadingAnchor, padding: .init(top: 0, left: 45, bottom: 0, right: 0), size: .init(width: 75, height: 20))
+        priceLabel.anchor(top: self.titleLabel.topAnchor, leading: nil, bottom: self.titleLabel.bottomAnchor, trailing: self.checkBoxLabel.leadingAnchor, padding: .init(top: 0, left: 45, bottom: 0, right: 0), size: .init(width: 75, height: 20))
         checkBoxLabel.anchor(top: nil, leading: nil, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 15), size: .init(width: 25, height: 25))
         checkBoxLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         self.selectionStyle = .none
-        //checkBoxLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleCheckTap)))
+        
+        linkButton.anchor(top: self.titleLabel.topAnchor, leading: self.titleLabel.trailingAnchor, bottom: self.titleLabel.bottomAnchor, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 10))
         
     }
     

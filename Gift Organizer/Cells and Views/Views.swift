@@ -56,7 +56,7 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         urlTextfield.anchor(top: self.urlLabel.topAnchor, leading: self.titleTextField.leadingAnchor, bottom: self.urlLabel.bottomAnchor, trailing: self.addView.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 35))
         
         addImgButton.anchor(top: self.urlLabel.bottomAnchor, leading: self.urlLabel.leadingAnchor, bottom: self.saveButton.topAnchor, trailing: nil,padding: .init(top: 50, left: 0, bottom: 50, right: 0), size: .init(width: 100, height: 30))
-        imgView.anchor(top: self.urlLabel.bottomAnchor, leading: self.addImgButton.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 20, left: 20, bottom: 20, right: 20), size: .init(width: 100, height: 100))
+        imgView.anchor(top: self.urlLabel.bottomAnchor, leading: self.addImgButton.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 20, bottom: 20, right: 20), size: .init(width: 100, height: 100))
         
         addView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         addView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -139,6 +139,7 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         field.layer.cornerRadius = 5
         field.placeholder = "Enter Name of Gift"
         field.textAlignment = .center
+        field.autocapitalizationType = .none
         return field
     }()
     
@@ -150,6 +151,7 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         field.layer.cornerRadius = 5
         field.placeholder = "Enter Gift Description"
         field.textAlignment = .center
+        field.autocapitalizationType = .none
         return field
     }()
     
@@ -162,6 +164,7 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         field.layer.cornerRadius = 5
         field.placeholder = "0.00"
         field.textAlignment = .center
+        field.autocapitalizationType = .none
         return field
     }()
     
@@ -173,6 +176,7 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         field.layer.cornerRadius = 5
         field.placeholder = "Enter Link to Gift"
         field.textAlignment = .center
+        field.autocapitalizationType = .none
         return field
     }()
     
