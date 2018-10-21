@@ -29,10 +29,9 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         
         setUpConstraints()
         view.backgroundColor = UIColor(white: 0, alpha: 0.5)
-        
-        
-        
 
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
 
@@ -206,6 +205,23 @@ class AddPopupView: UIViewController, UIImagePickerControllerDelegate, UINavigat
         self.dismiss(animated: true, completion: nil)
         
     }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height/2
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0{
+                self.view.frame.origin.y += keyboardSize.height/2
+            }
+        }
+    }
+
 }
 
 

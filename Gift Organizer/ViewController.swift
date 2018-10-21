@@ -36,6 +36,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         #warning("For Testing")
         peopleArray[0].totalBudget = 100
         
+        
     }
 
     //adds buttons to navBar
@@ -347,13 +348,5 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         }
     }
     
-    //Pushes View up with keyboard
-    @objc func keyboardWillShow(notification: NSNotification) {
-        //Push view up somehow
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        //Pull view back down somehow
-    }
 }
 
