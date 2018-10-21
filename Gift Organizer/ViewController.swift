@@ -70,18 +70,29 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     //handles the addImage button press
     @objc func handleImgAdd() {
-        let image = UIImagePickerController()
-        image.sourceType = UIImagePickerController.SourceType.photoLibrary
-        image.delegate = self.addPopUpView
-        self.addPopUpView.present(image, animated: true, completion: nil)
+        actionSheet(sourceView: self.addPopUpView)
     }
     
     //handles the editImage button press
     @objc func handleImgEdit() {
+        actionSheet(sourceView: self.editPopUpView)
+    }
+    
+    //User Chooses camera or library
+    func actionSheet(sourceView: AddPopupView) {
         let image = UIImagePickerController()
-        image.sourceType = UIImagePickerController.SourceType.photoLibrary
-        image.delegate = self.editPopUpView
-        self.editPopUpView.present(image, animated: true, completion: nil)
+        image.delegate = sourceView
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Camera", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+            image.sourceType = UIImagePickerController.SourceType.camera
+            sourceView.present(image, animated: true, completion: nil)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Gallery", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+            image.sourceType = UIImagePickerController.SourceType.photoLibrary
+            sourceView.present(image, animated: true, completion: nil)
+        }))
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        sourceView.present(actionSheet, animated: true, completion: nil)
     }
     
     //handles Save Button press
@@ -170,7 +181,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             if let window = UIApplication.shared.keyWindow {
                 self.editPopUpView.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
                 self.present(self.editPopUpView, animated: true, completion: nil)
-                
+                self.editPopUpView.addImgButton.setTitle("Edit Image", for: .normal)
                 self.editPopUpView.view.frame = window.frame
                 //self.editPopUpView.view.backgroundColor = UIColor(white: 0, alpha: 0.5)
                 let tapReconizer = MyTapGuesture(target: self, action: #selector(self.handleUpdate(Sender:)))
@@ -198,19 +209,27 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     @objc func handleLinkTap(Sender: MyTapGuesture) {
         let linkStr = peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].link
-        guard let url = URL(string: linkStr) else {
-            //display something for a Failed URL
-            let alert = UIAlertController(title: "Incorrect URL Format", message: "Make sure the URL is in the corect format.  EX: https://www.google.com", preferredStyle: .alert)
-            
-            alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-            
-            self.present(alert, animated: true)
-            
-            return
+        if (linkStr.hasPrefix("https://") || linkStr.hasPrefix("http://")){
+            guard let url = URL(string: linkStr) else {
+                //display something for a Failed URL
+                wrongURL()
+                
+                return
+            }
+            UIApplication.shared.open(url)
+        } else {
+            wrongURL()
         }
-        UIApplication.shared.open(url)
-            
         
+    }
+    
+    //If link button is tapped in cell and url is invalid, This func is called
+    func wrongURL() {
+        let alert = UIAlertController(title: "Incorrect URL Format", message: "Make sure the URL is in the corect format.  EX: https://www.google.com", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+        
+        self.present(alert, animated: true)
     }
     
     #warning("Used for Testing")
