@@ -75,6 +75,14 @@ class HeaderCell: UITableViewHeaderFooterView {
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
+    
+    let groupLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.font = lbl.font.withSize(14)
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        //lbl.textAlignment = .center
+        return lbl
+    }()
  
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
@@ -84,6 +92,7 @@ class HeaderCell: UITableViewHeaderFooterView {
         self.addSubview(totalBudgetLabel)
         self.addSubview(remainingTitleLabel)
         self.addSubview(budgetTitleLabel)
+        self.addSubview(groupLabel)
         
         profilePicture.clipsToBounds = true
         profilePicture.layer.masksToBounds = false
@@ -106,6 +115,8 @@ class HeaderCell: UITableViewHeaderFooterView {
         remainingTitleLabel.anchor(top: nil, leading: nil, bottom: remainingLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 5, right: 0))
         remainingTitleLabel.centerXAnchor.constraint(equalTo: self.remainingLabel.centerXAnchor).isActive = true
         
+        groupLabel.centerXAnchor.constraint(equalTo: self.nameLabel.centerXAnchor).isActive = true
+        groupLabel.anchor(top: self.nameLabel.bottomAnchor, leading: self.nameLabel.leadingAnchor, bottom: self.bottomAnchor, trailing: self.nameLabel.trailingAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 0))
         
     }
     
@@ -271,3 +282,46 @@ class GiftIdeaCell: UITableViewCell {
     }
     
 }
+
+
+class peopleCell: UITableViewCell {
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        self.addSubview(profilePicture)
+        self.addSubview(nameLabel)
+        
+        profilePicture.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        profilePicture.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 5, bottom: 0, right: 0), size: .init(width: 50, height: 50))
+        
+        nameLabel.anchor(top: self.profilePicture.topAnchor, leading: self.profilePicture.trailingAnchor, bottom: self.profilePicture.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 0))
+        
+    }
+    
+    let profilePicture: UIImageView = {
+        let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        img.layer.borderWidth = 1.0
+        img.layer.masksToBounds = false
+        img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        img.layer.cornerRadius = img.frame.size.height/2
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.clipsToBounds = true
+        img.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1)
+        return img
+    }()
+    
+    let nameLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "Matthew Wells"
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+}
+

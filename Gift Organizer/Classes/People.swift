@@ -14,12 +14,28 @@ class People {
     var giftIdeaList = [GiftIdeas]()
     var totalBudget = 0.0
     var spentBudget = 0.0
+    var groupSection = ""
+    var fullName = ""
     var imageView = UIImageView()
     
     
     init() {
         //giftIdeaList.append(GiftIdeas())
     }
+    
+    init(name: String, total: Double, image: UIImageView, group: String) {
+        fullName = name
+        totalBudget = total
+        imageView = image
+        groupSection = group
+    }
+    
+    init(name: String, total: Double, group: String) {
+        fullName = name
+        totalBudget = total
+        groupSection = group
+    }
+    
     
     func calcRemainingBudgetString() -> String{
         let calc = totalBudget - spentBudget

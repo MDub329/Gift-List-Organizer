@@ -15,12 +15,15 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     let footerId = "footerId"
     let emptyBox = "Checkmarkempty"
     let checkBox = "Checkmark"
+    let DH = DataHandler.standard
     
-    let personIndex = 0
+    //let DH.personIndex = 0
     
-    var peopleArray = [People]()
+
     let addPopUpView = AddPopupView()
     let editPopUpView = AddPopupView()
+    let peopleVC = PeopleVC()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,18 +34,25 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         
         setUpNavBar()
         //arrayTesting()
-        peopleArray.append(People())
-        peopleArray[personIndex].spentBudget = calcSpent()
+        let newPerson = People(name: "Matthew Wells", total: 100, group: "Family")
+        DH.data.append(newPerson)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
         #warning("For Testing")
-        peopleArray[0].totalBudget = 100
+        //peopleArray[0].totalBudget = 100
+        
         
         
     }
 
     //adds buttons to navBar
     func setUpNavBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(HomeController.handleAdd))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(HomeController.handleMore))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.handleAdd))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.handleMore))
+        
+        //NavBar back text
+        let backItem = UIBarButtonItem()
+        backItem.title = "Gifts"
+        navigationItem.backBarButtonItem = backItem
     }
     
     //add button is pressed
@@ -116,7 +126,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         }
         newGift.purchImage = emptyBox
         
-        peopleArray[personIndex].giftIdeaList.append(newGift)
+        DH.data[DH.personIndex].giftIdeaList.append(newGift)
         //checkImgNameArray.append(emptyBox)
         tableView.reloadSections([0], with: .automatic)
         self.dismiss(animated: true, completion: nil)
@@ -127,24 +137,24 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     @objc func handleUpdate(Sender: MyLongPressGuesture){
         let index = Sender.indexPath.row
         if let name = editPopUpView.titleTextField.text {
-            peopleArray[personIndex].giftIdeaList[index].title = name
+            DH.data[DH.personIndex].giftIdeaList[index].title = name
         }
         if let desc = editPopUpView.descTextField.text {
-            peopleArray[personIndex].giftIdeaList[index].description = desc
+            DH.data[DH.personIndex].giftIdeaList[index].description = desc
         }
         if var price = editPopUpView.priceTextField.text {
             if (price.prefix(1) == "$") { //removes the $ from the start of price string
                 price.remove(at: price.startIndex)
             }
             if let priceDbl = Double(price){
-                peopleArray[personIndex].giftIdeaList[index].price = priceDbl
+                DH.data[DH.personIndex].giftIdeaList[index].price = priceDbl
             }
         }
         if let link = editPopUpView.urlTextfield.text {
-            peopleArray[personIndex].giftIdeaList[index].link = link
+            DH.data[DH.personIndex].giftIdeaList[index].link = link
         }
         if let img = self.editPopUpView.imgView.image {
-            peopleArray[personIndex].giftIdeaList[index].imageView.image = img
+            DH.data[DH.personIndex].giftIdeaList[index].imageView.image = img
         }
         
         tableView.reloadSections([0], with: .automatic)
@@ -157,14 +167,16 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         self.dismiss(animated: true, completion: nil)
     }
     
-    //Top left button is pressed
+    
+    //Top left button is pressed Pushes VC with navController
     @objc func handleMore(){
-        //Top left Btn is pressed
+        self.peopleVC.passedPeopleArray = DH.data
+        self.navigationController?.pushViewController(peopleVC, animated: true)
     }
     
     //Cell is tapped
     @objc func cellTap(Sender: MyLongPressGuesture) {
-        let dataLoc =  self.peopleArray[self.personIndex].giftIdeaList[Sender.indexPath.row]
+        let dataLoc =  self.DH.data[self.DH.personIndex].giftIdeaList[Sender.indexPath.row]
         if (dataLoc.purchImage == emptyBox) {
             dataLoc.purchImage = checkBox
             dataLoc.purchased = true
@@ -172,7 +184,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             dataLoc.purchImage = emptyBox
             dataLoc.purchased = false
         }
-        peopleArray[personIndex].spentBudget = calcSpent()
+        DH.data[DH.personIndex].spentBudget = calcSpent()
         tableView.reloadData()
     }
 
@@ -199,17 +211,17 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
                 
                 let index = Sender.indexPath.row
                 
-                self.editPopUpView.titleTextField.text = peopleArray[personIndex].giftIdeaList[index].title
-                self.editPopUpView.descTextField.text = peopleArray[personIndex].giftIdeaList[index].description
-                self.editPopUpView.priceTextField.text = peopleArray[personIndex].giftIdeaList[index].priceString()
-                self.editPopUpView.urlTextfield.text = peopleArray[personIndex].giftIdeaList[index].link
-                self.editPopUpView.imgView.image = peopleArray[personIndex].giftIdeaList[index].imageView.image
+                self.editPopUpView.titleTextField.text = DH.data[DH.personIndex].giftIdeaList[index].title
+                self.editPopUpView.descTextField.text = DH.data[DH.personIndex].giftIdeaList[index].description
+                self.editPopUpView.priceTextField.text = DH.data[DH.personIndex].giftIdeaList[index].priceString()
+                self.editPopUpView.urlTextfield.text = DH.data[DH.personIndex].giftIdeaList[index].link
+                self.editPopUpView.imgView.image = DH.data[DH.personIndex].giftIdeaList[index].imageView.image
             }
         }
     }
     
     @objc func handleLinkTap(Sender: MyTapGuesture) {
-        let linkStr = peopleArray[personIndex].giftIdeaList[Sender.indexPath.row].link
+        let linkStr = DH.data[DH.personIndex].giftIdeaList[Sender.indexPath.row].link
         if (linkStr.hasPrefix("https://") || linkStr.hasPrefix("http://")){
             guard let url = URL(string: linkStr) else {
                 //display something for a Failed URL
@@ -235,19 +247,19 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     #warning("Used for Testing")
     func arrayTesting() {
-        peopleArray.append(People())
+        DH.data.append(People())
         let testString = "This is a place holder description text.  This is where a dscription of the item will be."
         let giftTest = GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "ATH-M50x", desc: testString, prc: 10.00, purch: false, lnk: "", purchString: emptyBox)
-        peopleArray[personIndex].giftIdeaList.append(giftTest)
-        peopleArray[personIndex].giftIdeaList.append(GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "Test String2", desc: "Test Desc2", prc: 20.00, purch: false, lnk: "", purchString: emptyBox))
-        peopleArray[personIndex].totalBudget = 350
+        DH.data[DH.personIndex].giftIdeaList.append(giftTest)
+        DH.data[DH.personIndex].giftIdeaList.append(GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "Test String2", desc: "Test Desc2", prc: 20.00, purch: false, lnk: "", purchString: emptyBox))
+        DH.data[DH.personIndex].totalBudget = 350
     }
     
     //Calculates the amount spent
     func calcSpent() -> Double{
         var sum = 0.0
-        if (!peopleArray[personIndex].giftIdeaList.isEmpty){
-            for item in peopleArray[personIndex].giftIdeaList {
+        if (!DH.data[DH.personIndex].giftIdeaList.isEmpty){
+            for item in DH.data[DH.personIndex].giftIdeaList {
                 if (item.purchased == true){
                     sum += item.price
                 }
@@ -258,11 +270,11 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let myCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! GiftIdeaCell
-        myCell.checkBoxLabel.image = UIImage(named: peopleArray[personIndex].giftIdeaList[indexPath.row].purchImage)
-        myCell.priceLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].priceString()
-        myCell.titleLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].title
-        myCell.descLabel.text = peopleArray[personIndex].giftIdeaList[indexPath.row].description
-        myCell.itemPicture.image = peopleArray[personIndex].giftIdeaList[indexPath.row].imageView.image
+        myCell.checkBoxLabel.image = UIImage(named: DH.data[DH.personIndex].giftIdeaList[indexPath.row].purchImage)
+        myCell.priceLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].priceString()
+        myCell.titleLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].title
+        myCell.descLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].description
+        myCell.itemPicture.image = DH.data[DH.personIndex].giftIdeaList[indexPath.row].imageView.image
         
         //sends index to allow for both a long tap and normal tap
         let tapReconizer = MyTapGuesture(target: self, action: #selector(self.cellTap))
@@ -286,10 +298,10 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         myHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! HeaderCell
         myHeader.backgroundView = UIView(frame: myHeader.bounds)
         myHeader.backgroundView?.backgroundColor = .white
-        myHeader.totalBudgetLabel.text = peopleArray[personIndex].totalToString()
-        myHeader.remainingLabel.text = peopleArray[personIndex].calcRemainingBudgetString()
-        myHeader.profilePicture.image = peopleArray[personIndex].imageView.image
-        
+        myHeader.totalBudgetLabel.text = DH.data[DH.personIndex].totalToString()
+        myHeader.remainingLabel.text = DH.data[DH.personIndex].calcRemainingBudgetString()
+        myHeader.profilePicture.image = DH.data[DH.personIndex].imageView.image
+        myHeader.groupLabel.text = DH.data[DH.personIndex].groupSection
         return myHeader
     }
     
@@ -297,8 +309,8 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         myFooter = tableView.dequeueReusableHeaderFooterView(withIdentifier: footerId) as! FooterCell
-        myFooter.totalGiftsLabel.text = String(peopleArray[personIndex].giftIdeaList.count)
-        myFooter.totalSpentLabel.text = peopleArray[personIndex].spentToString()
+        myFooter.totalGiftsLabel.text = String(DH.data[DH.personIndex].giftIdeaList.count)
+        myFooter.totalSpentLabel.text = DH.data[DH.personIndex].spentToString()
         return myFooter
     }
     
@@ -314,7 +326,11 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         return 40
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return peopleArray[section].giftIdeaList.count
+        var intReturn = 0
+        if (DH.data.isEmpty == false) {
+            intReturn = DH.data[section].giftIdeaList.count
+        }
+        return intReturn
     }
     
     override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
@@ -327,7 +343,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
 
                 //Clean up calls with this Constant
-                let dataLoc =  self.peopleArray[self.personIndex]
+                let dataLoc =  self.DH.data[self.DH.personIndex]
                 
                 dataLoc.giftIdeaList.remove(at: indexPath.row)
                 tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -348,5 +364,13 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         }
     }
     
+
+    
+}
+
+class DataHandler{
+    static let standard = DataHandler()
+    var data = [People]()
+    var personIndex = 0
 }
 
