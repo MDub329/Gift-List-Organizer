@@ -291,12 +291,14 @@ class peopleCell: UITableViewCell {
         
         self.addSubview(profilePicture)
         self.addSubview(nameLabel)
+        //self.addSubview(progressBar)
         
         profilePicture.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         profilePicture.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 5, bottom: 0, right: 0), size: .init(width: 50, height: 50))
         
-        nameLabel.anchor(top: self.profilePicture.topAnchor, leading: self.profilePicture.trailingAnchor, bottom: self.profilePicture.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 0))
+        nameLabel.anchor(top: self.profilePicture.topAnchor, leading: self.profilePicture.trailingAnchor, bottom: self.profilePicture.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 0))
         
+        //progressBar.anchor(top: self.nameLabel.topAnchor, leading: self.nameLabel.trailingAnchor, bottom: self.nameLabel.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 15, left: 10, bottom: 15, right: 5))
     }
     
     let profilePicture: UIImageView = {
@@ -316,6 +318,19 @@ class peopleCell: UITableViewCell {
         lbl.text = "Matthew Wells"
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
+    }()
+    
+    let progressBar: UIProgressView = {
+        let bar = UIProgressView()
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.layer.cornerRadius = 10
+        bar.layer.borderWidth = 2
+        bar.layer.borderColor = #colorLiteral(red: 0.1921568662, green: 0.007843137719, blue: 0.09019608051, alpha: 1)
+        bar.clipsToBounds = true
+        bar.progressViewStyle = .bar
+        bar.layer.masksToBounds = false
+        
+        return bar
     }()
     
     

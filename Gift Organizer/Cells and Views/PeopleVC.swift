@@ -12,24 +12,97 @@ import UIKit
 class PeopleVC: UITableViewController {
     
     let DH = DataHandler.standard
-    var passedPeopleArray = [People]()
     let cellId = "cellId"
+    let addPersonVC = AddPerson()
+    let editPersonVC = AddPerson()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setUpNavBar()
         tableView.register(peopleCell.self, forCellReuseIdentifier: cellId)
+        
+        setUpAddPerson()
+        setUpEditPerson()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
+    }
 
     //adds buttons to navBar
     func setUpNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.handleAdd))
+        
+        let backItem = UIBarButtonItem()
+        backItem.title = "Cancel"
+        navigationItem.backBarButtonItem = backItem
         //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.handleMore))
+    }
+    
+    //Setup AddPersonVC Bar Button
+    func setUpAddPerson(){
+        self.addPersonVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.handleSave))
+    }
+    
+    //Setup EditPersonVC Bar Button
+    func setUpEditPerson() {
+        self.editPersonVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Update", style: .done, target: self, action: #selector(self.handleUpdate))
+    }
+    
+    //AddPersonVC Save button pressed
+    @objc func handleSave() {
+        let newPerson = People()
+        
+        if let name = self.addPersonVC.nameTextField.text {
+            newPerson.fullName = name
+        }
+        if let group = self.addPersonVC.groupTextField.text {
+            newPerson.groupSection = group
+        }
+        if let budget = Double(self.addPersonVC.budgetTextField.text!) {
+            newPerson.totalBudget = budget
+        }
+        if let note = self.addPersonVC.notesTextField.text {
+            newPerson.note = note
+        }
+        if let image = self.addPersonVC.imgView.image {
+            newPerson.imageView.image = image
+        }
+        
+        DH.data.append(newPerson)
+        DH.personIndex = DH.data.count - 1
+        self.navigationController?.popViewController(animated: true)
+        
+    }
+    
+    //EditPersonVC Edit button pressed
+    @objc func handleUpdate() {
+        
+        if let name = self.editPersonVC.nameTextField.text {
+            DH.data[DH.personIndex].fullName = name
+        }
+        if let group = self.editPersonVC.groupTextField.text {
+            DH.data[DH.personIndex].groupSection = group
+        }
+        if let budget = Double(self.editPersonVC.budgetTextField.text!) {
+            DH.data[DH.personIndex].totalBudget = budget
+        }
+        if let note = self.editPersonVC.notesTextField.text {
+            DH.data[DH.personIndex].note = note
+        }
+        if let image = self.editPersonVC.imgView.image {
+            DH.data[DH.personIndex].imageView.image = image
+        }
+        
+        
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func handleAdd(){
         //Add button is pressed
+        self.addPersonVC.clearFields()
+        
+        self.navigationController?.pushViewController(self.addPersonVC, animated: true)
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -42,14 +115,69 @@ class PeopleVC: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return DH.data.count
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let myCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! peopleCell
         //myCell.nameLabel.text = "Matthew Wells"
         myCell.nameLabel.text = DH.data[indexPath.row].fullName
+        myCell.profilePicture.image = DH.data[indexPath.row].imageView.image
+        
+        //Handle select Tap and Edit Tap
+        let tapReconizer = MyTapGuesture(target: self, action: #selector(self.cellTap))
+        tapReconizer.indexPath = indexPath
+        myCell.addGestureRecognizer(tapReconizer)
+        
+        let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.cellLongPress))
+        longTapReconizer.indexPath = indexPath
+        longTapReconizer.minimumPressDuration = 0.7
+        myCell.addGestureRecognizer(longTapReconizer)
+        
         return myCell
+    }
+    
+    
+    //Cell is tapped
+    @objc func cellTap(Sender: MyLongPressGuesture) {
+        DH.personIndex = Sender.indexPath.row
+        self.navigationController?.popViewController(animated: true)
+    }
+    
+    //Cell is Long Pressed
+    @objc func cellLongPress(Sender: MyLongPressGuesture) {
+        if Sender.state == UIGestureRecognizer.State.began {
+            
+            let selectedPerson = DH.data[Sender.indexPath.row]
+            DH.personIndex = Sender.indexPath.row
+    
+            self.editPersonVC.clearFields()
+            self.editPersonVC.nameTextField.text = selectedPerson.fullName
+            self.editPersonVC.imgView.image = selectedPerson.imageView.image
+            self.editPersonVC.groupTextField.text = selectedPerson.groupSection
+            self.editPersonVC.budgetTextField.text = selectedPerson.totalToString()
+            self.editPersonVC.notesTextField.text = selectedPerson.note
+            
+            self.navigationController?.pushViewController(self.editPersonVC, animated: true)
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == UITableViewCell.EditingStyle.delete) {
+            let alert = UIAlertController(title: "Delete", message: "Are you sure you want to Delete?", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                
+                //Clean up calls with this Constant
+                self.DH.data.remove(at: indexPath.row)
+                tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.DH.personIndex -= 1
+                
+            }))
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                
+            }))
+            self.present(alert, animated: true, completion: nil)
+        }
     }
     
     

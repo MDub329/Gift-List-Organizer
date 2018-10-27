@@ -16,8 +16,10 @@
 		BC3C7A77216993CA0036A3A1 /* GiftIdea.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A76216993CA0036A3A1 /* GiftIdea.swift */; };
 		BC3C7A7A216994360036A3A1 /* Cells.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A79216994360036A3A1 /* Cells.swift */; };
 		BC3C7A7C2169A78C0036A3A1 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A7B2169A78B0036A3A1 /* Extensions.swift */; };
-		BC3C7A7E216ABFF20036A3A1 /* Views.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A7D216ABFF20036A3A1 /* Views.swift */; };
+		BC3C7A7E216ABFF20036A3A1 /* AddPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A7D216ABFF20036A3A1 /* AddPopupView.swift */; };
 		BC4E56E0218234C200A6E383 /* PeopleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4E56DF218234C200A6E383 /* PeopleVC.swift */; };
+		BC4E56E62183805800A6E383 /* AddPerson.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4E56E52183805800A6E383 /* AddPerson.swift */; };
+		BC4E56E9218381E600A6E383 /* Custom Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC4E56E8218381E600A6E383 /* Custom Classes.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,8 +34,10 @@
 		BC3C7A76216993CA0036A3A1 /* GiftIdea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftIdea.swift; sourceTree = "<group>"; };
 		BC3C7A79216994360036A3A1 /* Cells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cells.swift; sourceTree = "<group>"; };
 		BC3C7A7B2169A78B0036A3A1 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		BC3C7A7D216ABFF20036A3A1 /* Views.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views.swift; sourceTree = "<group>"; };
+		BC3C7A7D216ABFF20036A3A1 /* AddPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPopupView.swift; sourceTree = "<group>"; };
 		BC4E56DF218234C200A6E383 /* PeopleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleVC.swift; sourceTree = "<group>"; };
+		BC4E56E52183805800A6E383 /* AddPerson.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPerson.swift; sourceTree = "<group>"; };
+		BC4E56E8218381E600A6E383 /* Custom Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Classes.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,11 +70,11 @@
 		BC3C7A5D216869550036A3A1 /* Gift Organizer */ = {
 			isa = PBXGroup;
 			children = (
+				BC4E56E7218381BF00A6E383 /* Extensions & Custom Class */,
 				BC3C7A78216994200036A3A1 /* Cells and Views */,
 				BC3C7A7321686BB20036A3A1 /* Classes */,
 				BC3C7A5E216869550036A3A1 /* AppDelegate.swift */,
 				BC3C7A60216869550036A3A1 /* ViewController.swift */,
-				BC3C7A7B2169A78B0036A3A1 /* Extensions.swift */,
 				BC3C7A68216869560036A3A1 /* Assets.xcassets */,
 				BC3C7A6A216869560036A3A1 /* LaunchScreen.storyboard */,
 				BC3C7A6D216869560036A3A1 /* Info.plist */,
@@ -92,10 +96,20 @@
 			isa = PBXGroup;
 			children = (
 				BC3C7A79216994360036A3A1 /* Cells.swift */,
-				BC3C7A7D216ABFF20036A3A1 /* Views.swift */,
+				BC3C7A7D216ABFF20036A3A1 /* AddPopupView.swift */,
 				BC4E56DF218234C200A6E383 /* PeopleVC.swift */,
+				BC4E56E52183805800A6E383 /* AddPerson.swift */,
 			);
 			path = "Cells and Views";
+			sourceTree = "<group>";
+		};
+		BC4E56E7218381BF00A6E383 /* Extensions & Custom Class */ = {
+			isa = PBXGroup;
+			children = (
+				BC3C7A7B2169A78B0036A3A1 /* Extensions.swift */,
+				BC4E56E8218381E600A6E383 /* Custom Classes.swift */,
+			);
+			path = "Extensions & Custom Class";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -168,13 +182,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BC4E56E9218381E600A6E383 /* Custom Classes.swift in Sources */,
 				BC3C7A7521686BD40036A3A1 /* People.swift in Sources */,
 				BC3C7A7A216994360036A3A1 /* Cells.swift in Sources */,
 				BC3C7A77216993CA0036A3A1 /* GiftIdea.swift in Sources */,
 				BC3C7A61216869550036A3A1 /* ViewController.swift in Sources */,
-				BC3C7A7E216ABFF20036A3A1 /* Views.swift in Sources */,
+				BC3C7A7E216ABFF20036A3A1 /* AddPopupView.swift in Sources */,
 				BC3C7A5F216869550036A3A1 /* AppDelegate.swift in Sources */,
 				BC3C7A67216869550036A3A1 /* Gift_Organizer.xcdatamodeld in Sources */,
+				BC4E56E62183805800A6E383 /* AddPerson.swift in Sources */,
 				BC4E56E0218234C200A6E383 /* PeopleVC.swift in Sources */,
 				BC3C7A7C2169A78C0036A3A1 /* Extensions.swift in Sources */,
 			);

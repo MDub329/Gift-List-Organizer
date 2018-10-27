@@ -16,6 +16,7 @@ class People {
     var spentBudget = 0.0
     var groupSection = ""
     var fullName = ""
+    var note = ""
     var imageView = UIImageView()
     
     
@@ -28,6 +29,14 @@ class People {
         totalBudget = total
         imageView = image
         groupSection = group
+    }
+    
+    init(name: String, total: Double, image: UIImageView, group: String, notes: String) {
+        fullName = name
+        totalBudget = total
+        imageView = image
+        groupSection = group
+        note = notes
     }
     
     init(name: String, total: Double, group: String) {

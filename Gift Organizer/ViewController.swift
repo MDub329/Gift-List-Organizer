@@ -40,8 +40,10 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         #warning("For Testing")
         //peopleArray[0].totalBudget = 100
         
-        
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        tableView.reloadData()
     }
 
     //adds buttons to navBar
@@ -170,7 +172,6 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     //Top left button is pressed Pushes VC with navController
     @objc func handleMore(){
-        self.peopleVC.passedPeopleArray = DH.data
         self.navigationController?.pushViewController(peopleVC, animated: true)
     }
     
@@ -298,6 +299,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         myHeader = tableView.dequeueReusableHeaderFooterView(withIdentifier: headerId) as! HeaderCell
         myHeader.backgroundView = UIView(frame: myHeader.bounds)
         myHeader.backgroundView?.backgroundColor = .white
+        myHeader.nameLabel.text = DH.data[DH.personIndex].fullName
         myHeader.totalBudgetLabel.text = DH.data[DH.personIndex].totalToString()
         myHeader.remainingLabel.text = DH.data[DH.personIndex].calcRemainingBudgetString()
         myHeader.profilePicture.image = DH.data[DH.personIndex].imageView.image
@@ -325,6 +327,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 40
     }
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var intReturn = 0
         if (DH.data.isEmpty == false) {
