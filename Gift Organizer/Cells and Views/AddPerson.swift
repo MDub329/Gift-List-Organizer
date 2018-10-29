@@ -25,18 +25,17 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         self.addView.addSubview(notesTextField)
         self.addView.addSubview(progressBar)
         self.addView.addSubview(barLabel)
+        self.addView.addSubview(imgButton)
         self.hideKeyboardWhenTappedAround()
         
-        let tapReconizer = UITapGestureRecognizer(target: self, action: #selector(self.handleImgTap))
+        let tapReconizer = UITapGestureRecognizer(target: self, action: #selector(self.handleImgViewTap))
         self.imgView.isUserInteractionEnabled = true
         self.imgView.addGestureRecognizer(tapReconizer)
         
+        self.imgButton.addTarget(self, action: #selector(self.handleImgBtnTap), for: .touchUpInside)
+        
         setUpConstraints()
-        
-        view.backgroundColor = UIColor(white: 0, alpha: 0.5)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        miscSetup()
         
         
     }
@@ -49,8 +48,36 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         self.imgView.image = nil
     }
     
+    //Image View is tapped
+    @objc func handleImgViewTap(Sender: UITapGestureRecognizer) {
+        //Make image bigger to inspect
+        let imageView = Sender.view as! UIImageView
+        let fullScreenImageView = UIImageView(image: imageView.image)
+        fullScreenImageView.frame = UIScreen.main.bounds
+        fullScreenImageView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.6)
+        fullScreenImageView.contentMode = .scaleAspectFit
+        fullScreenImageView.isUserInteractionEnabled = true
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleFullScreenDismiss(Sender:)))
+        fullScreenImageView.addGestureRecognizer(tap)
+        
+        #warning("Animate Image")
+        
+        
+        self.view.addSubview(fullScreenImageView)
+        self.navigationController?.isNavigationBarHidden = true
+        self.tabBarController?.tabBar.isHidden = true
+        
+    }
+    
+    //Dismiss imageView when tapped
+    @objc func handleFullScreenDismiss(Sender: UITapGestureRecognizer) {
+        self.navigationController?.isNavigationBarHidden = false
+        self.tabBarController?.tabBar.isHidden = false
+        Sender.view?.removeFromSuperview()
+    }
+    
     //User Chooses camera or library
-    @objc func handleImgTap() {
+    @objc func handleImgBtnTap() {
         let image = UIImagePickerController()
         image.delegate = self
         let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -66,6 +93,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         self.present(actionSheet, animated: true, completion: nil)
     }
     
+    //Set Constraints
     func setUpConstraints() {
         self.addView.anchor(top: self.view.safeAreaLayoutGuide.topAnchor, leading: self.view.leadingAnchor, bottom: self.view.bottomAnchor, trailing: self.view.trailingAnchor)
         
@@ -77,7 +105,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         groupLabel.anchor(top: self.nameTextField.bottomAnchor, leading: self.nameTextField.leadingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
         groupTextField.anchor(top: self.groupLabel.bottomAnchor, leading: self.nameTextField.leadingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 25), size: .init(width: 0, height: 25))
         
-        budgetLabel.anchor(top: self.imgView.bottomAnchor, leading: self.imgView.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 20, left: 0, bottom: 0, right: 0))
+        budgetLabel.anchor(top: self.imgButton.bottomAnchor, leading: self.imgButton.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 20, left: 0, bottom: 0, right: 0))
         budgetTextField.anchor(top: self.budgetLabel.bottomAnchor, leading: self.budgetLabel.leadingAnchor, bottom: nil, trailing: self.budgetLabel.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: -20), size: .init(width: 80, height: 25))
         
         notesLabel.anchor(top: self.budgetTextField.bottomAnchor, leading: self.budgetTextField.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
@@ -85,10 +113,20 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
         progressBar.anchor(top: self.budgetTextField.topAnchor, leading: self.imgView.trailingAnchor, bottom: self.budgetTextField.bottomAnchor, trailing: self.addView.trailingAnchor, padding: .init(top: 0, left: 15, bottom: 0, right: 25))
         barLabel.anchor(top: self.budgetLabel.topAnchor, leading: self.progressBar.leadingAnchor, bottom: self.budgetLabel.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
+        
+        imgButton.anchor(top: self.imgView.bottomAnchor, leading: self.imgView.leadingAnchor, bottom: self.budgetLabel.topAnchor, trailing: self.imgView.trailingAnchor, padding: .init(top: 2, left: 0, bottom: 0, right: 0))
     }
     
     
+    func miscSetup() {
+        view.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+    }
     
+    
+    //Views Created
     let addView: UIView = {
         let view = UIView()
         //view.frame = CGRect(x: 0, y: 0, width: 100, height: 100)
@@ -204,9 +242,17 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     
     let barLabel: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Bar Label"
+        lbl.text = "Progress Bar"
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
+    }()
+    
+    let imgButton: UIButton = {
+        let btn = UIButton()
+        btn.setTitle("Edit", for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitleColor(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1), for: .normal)
+        return btn
     }()
     
     
