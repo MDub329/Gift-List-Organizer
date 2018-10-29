@@ -33,12 +33,8 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         tableView.register(FooterCell.self, forHeaderFooterViewReuseIdentifier: footerId)
         
         setUpNavBar()
-        //arrayTesting()
-        let newPerson = People(name: "Matthew Wells", total: 100, group: "Family")
-        DH.data.append(newPerson)
-        DH.data[DH.personIndex].spentBudget = calcSpent()
-        #warning("For Testing")
-        //peopleArray[0].totalBudget = 100
+        arrayTesting()
+
         
     }
     
@@ -248,12 +244,18 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     #warning("Used for Testing")
     func arrayTesting() {
-        DH.data.append(People())
-        let testString = "This is a place holder description text.  This is where a dscription of the item will be."
-        let giftTest = GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "ATH-M50x", desc: testString, prc: 10.00, purch: false, lnk: "", purchString: emptyBox)
-        DH.data[DH.personIndex].giftIdeaList.append(giftTest)
-        DH.data[DH.personIndex].giftIdeaList.append(GiftIdeas(img: UIImage(named: "ATH-M50x")!, ttl: "Test String2", desc: "Test Desc2", prc: 20.00, purch: false, lnk: "", purchString: emptyBox))
-        DH.data[DH.personIndex].totalBudget = 350
+        let newPerson = People(name: "Matthew Wells", total: 100, group: "Family")
+        DH.data.append(newPerson)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
+        let newPerson1 = People(name: "Matthew Wells1", total: 100, group: "Co-Worker")
+        DH.data.append(newPerson1)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
+        let newPerson2 = People(name: "Matthew Wells2", total: 100, group: "Family")
+        DH.data.append(newPerson2)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
+        let newPerson3 = People(name: "Matthew Wells3", total: 100, group: "Misc")
+        DH.data.append(newPerson3)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
     }
     
     //Calculates the amount spent

@@ -56,8 +56,10 @@ class PeopleVC: UITableViewController {
         if let name = self.addPersonVC.nameTextField.text {
             newPerson.fullName = name
         }
+        //Cap first letter of Group
         if let group = self.addPersonVC.groupTextField.text {
-            newPerson.groupSection = group
+            let capGroup = (group.prefix(1).uppercased() + group.lowercased().dropFirst())
+            newPerson.groupSection = capGroup
         }
         if let budget = Double(self.addPersonVC.budgetTextField.text!) {
             newPerson.totalBudget = budget
@@ -81,8 +83,10 @@ class PeopleVC: UITableViewController {
         if let name = self.editPersonVC.nameTextField.text {
             DH.data[DH.personIndex].fullName = name
         }
+        //Cap first letter of Group
         if let group = self.editPersonVC.groupTextField.text {
-            DH.data[DH.personIndex].groupSection = group
+            let capGroup = (group.prefix(1).uppercased() + group.lowercased().dropFirst())
+            DH.data[DH.personIndex].groupSection = capGroup
         }
         //Removes the $ if present
         if var budgetSTR = self.editPersonVC.budgetTextField.text {
