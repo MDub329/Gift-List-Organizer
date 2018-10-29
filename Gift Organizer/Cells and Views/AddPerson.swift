@@ -11,6 +11,8 @@ import UIKit
 
 class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
+    let DH = DataHandler.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.addSubview(addView)
@@ -26,6 +28,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         self.addView.addSubview(progressBar)
         self.addView.addSubview(barLabel)
         self.addView.addSubview(imgButton)
+       // self.addView.addSubview(giftCollectionView)
         self.hideKeyboardWhenTappedAround()
         
         let tapReconizer = UITapGestureRecognizer(target: self, action: #selector(self.handleImgViewTap))
@@ -37,7 +40,16 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         setUpConstraints()
         miscSetup()
         
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        setProgressBarValue()
+    }
+    
+    func setProgressBarValue(){
+        let spent = DH.data[DH.personIndex].spentBudget
+        let value = spent/DH.data[DH.personIndex].totalBudget
+        self.progressBar.progress = Float(value)
     }
     
     func clearFields(){
@@ -115,9 +127,11 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         barLabel.anchor(top: self.budgetLabel.topAnchor, leading: self.progressBar.leadingAnchor, bottom: self.budgetLabel.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
         
         imgButton.anchor(top: self.imgView.bottomAnchor, leading: self.imgView.leadingAnchor, bottom: self.budgetLabel.topAnchor, trailing: self.imgView.trailingAnchor, padding: .init(top: 2, left: 0, bottom: 0, right: 0))
+        
+        //giftCollectionView.anchor(top: self.notesLabel.bottomAnchor, leading: self.addView.leadingAnchor, bottom: self.addView.bottomAnchor, trailing: self.addView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 15, right: 15))
     }
     
-    
+    //View and Keyboard Obvserver
     func miscSetup() {
         view.backgroundColor = UIColor(white: 0, alpha: 0.5)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -254,6 +268,13 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         btn.setTitleColor(#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1), for: .normal)
         return btn
     }()
+    
+//    let giftCollectionView: UICollectionView = {
+//        let cv = UICollectionView()
+//        cv.collectionViewLayout = UICollectionViewFlowLayout()
+//        cv.backgroundColor = .blue
+//        return cv
+//    }()
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {

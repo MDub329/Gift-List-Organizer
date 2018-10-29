@@ -84,8 +84,14 @@ class PeopleVC: UITableViewController {
         if let group = self.editPersonVC.groupTextField.text {
             DH.data[DH.personIndex].groupSection = group
         }
-        if let budget = Double(self.editPersonVC.budgetTextField.text!) {
-            DH.data[DH.personIndex].totalBudget = budget
+        //Removes the $ if present
+        if var budgetSTR = self.editPersonVC.budgetTextField.text {
+            if (budgetSTR.hasPrefix("$")) {
+                budgetSTR.remove(at: budgetSTR.startIndex)
+            }
+            if let budget = Double(budgetSTR){
+                DH.data[DH.personIndex].totalBudget = budget
+            }
         }
         if let note = self.editPersonVC.notesTextField.text {
             DH.data[DH.personIndex].note = note

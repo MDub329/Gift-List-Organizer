@@ -340,3 +340,59 @@ class peopleCell: UITableViewCell {
 
 }
 
+//CollectionView Cell
+class giftCVCell: UICollectionViewCell {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.addSubview(profilePicture)
+        self.addSubview(nameLabel)
+        self.addSubview(priceLabel)
+        setUpConstraints()
+    }
+    
+    
+    func setUpConstraints(){
+        
+        profilePicture.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        profilePicture.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 5, bottom: 0, right: 0), size: .init(width: 50, height: 50))
+        
+        nameLabel.anchor(top: self.profilePicture.topAnchor, leading: self.profilePicture.leadingAnchor, bottom: self.profilePicture.bottomAnchor, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 0))
+        priceLabel.anchor(top: self.topAnchor, leading: self.priceLabel.trailingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 5))
+    }
+    
+    let profilePicture: UIImageView = {
+        let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+        img.layer.borderWidth = 1.0
+        img.layer.masksToBounds = false
+        img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+        img.layer.cornerRadius = img.frame.size.height/2
+        img.translatesAutoresizingMaskIntoConstraints = false
+        img.clipsToBounds = true
+        img.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1)
+        return img
+    }()
+    
+    let nameLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.text = "Matthew Wells"
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
+    let priceLabel: UILabel = {
+        let priceLbl = UILabel()
+        priceLbl.text = "$20.00"
+        //priceLbl.font = priceLbl.font.withSize(12)
+        priceLbl.translatesAutoresizingMaskIntoConstraints = false
+        //priceLbl.backgroundColor = .red
+        return priceLbl
+    }()
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+}
+
