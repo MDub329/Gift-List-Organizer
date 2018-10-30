@@ -17,7 +17,6 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     let checkBox = "Checkmark"
     let DH = DataHandler.standard
     
-    //let DH.personIndex = 0
     
 
     let addPopUpView = AddPopupView()
@@ -39,6 +38,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        
         tableView.reloadData()
     }
 
@@ -244,7 +244,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     #warning("Used for Testing")
     func arrayTesting() {
-        let newPerson = People(name: "Matthew Wells", total: 100, group: "Family")
+        let newPerson = People(name: "Matthew Wells", total: 100, group: "Family", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
         DH.data.append(newPerson)
         DH.data[DH.personIndex].spentBudget = calcSpent()
         let newPerson1 = People(name: "Matthew Wells1", total: 100, group: "Co-Worker")
@@ -273,25 +273,25 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let myCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! GiftIdeaCell
-        myCell.checkBoxLabel.image = UIImage(named: DH.data[DH.personIndex].giftIdeaList[indexPath.row].purchImage)
-        myCell.priceLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].priceString()
-        myCell.titleLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].title
-        myCell.descLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].description
-        myCell.itemPicture.image = DH.data[DH.personIndex].giftIdeaList[indexPath.row].imageView.image
-        
-        //sends index to allow for both a long tap and normal tap
-        let tapReconizer = MyTapGuesture(target: self, action: #selector(self.cellTap))
-        tapReconizer.indexPath = indexPath
-        myCell.addGestureRecognizer(tapReconizer)
-        
-        let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.cellLongPress))
-        longTapReconizer.indexPath = indexPath
-        longTapReconizer.minimumPressDuration = 0.7
-        myCell.addGestureRecognizer(longTapReconizer)
-        
-        let linkTapReconizer = MyTapGuesture(target: self, action: #selector(self.handleLinkTap))
-        linkTapReconizer.indexPath = indexPath
-        myCell.linkButton.addGestureRecognizer(linkTapReconizer)
+            myCell.checkBoxLabel.image = UIImage(named: DH.data[DH.personIndex].giftIdeaList[indexPath.row].purchImage)
+            myCell.priceLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].priceString()
+            myCell.titleLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].title
+            myCell.descLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].description
+            myCell.itemPicture.image = DH.data[DH.personIndex].giftIdeaList[indexPath.row].imageView.image
+            
+            //sends index to allow for both a long tap and normal tap
+            let tapReconizer = MyTapGuesture(target: self, action: #selector(self.cellTap))
+            tapReconizer.indexPath = indexPath
+            myCell.addGestureRecognizer(tapReconizer)
+            
+            let longTapReconizer = MyLongPressGuesture(target: self, action: #selector(self.cellLongPress))
+            longTapReconizer.indexPath = indexPath
+            longTapReconizer.minimumPressDuration = 0.7
+            myCell.addGestureRecognizer(longTapReconizer)
+            
+            let linkTapReconizer = MyTapGuesture(target: self, action: #selector(self.handleLinkTap))
+            linkTapReconizer.indexPath = indexPath
+            myCell.linkButton.addGestureRecognizer(linkTapReconizer)
         return myCell
     }
     
@@ -332,8 +332,8 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var intReturn = 0
-        if (DH.data.isEmpty == false) {
-            intReturn = DH.data[section].giftIdeaList.count
+        if (!DH.data.isEmpty) {
+            intReturn = DH.data[DH.personIndex].giftIdeaList.count
         }
         return intReturn
     }

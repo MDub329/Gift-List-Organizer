@@ -345,24 +345,32 @@ class giftCVCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubview(profilePicture)
+        self.addSubview(imageView)
         self.addSubview(nameLabel)
         self.addSubview(priceLabel)
         setUpConstraints()
+        
+        setUpCellStyle()
     }
     
+    
+    func setUpCellStyle() {
+        self.layer.cornerRadius = 10
+        
+        
+    }
     
     func setUpConstraints(){
         
-        profilePicture.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profilePicture.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 5, bottom: 0, right: 0), size: .init(width: 50, height: 50))
+        imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        imageView.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 5, bottom: 0, right: 0), size: .init(width: 40, height: 40))
         
-        nameLabel.anchor(top: self.profilePicture.topAnchor, leading: self.profilePicture.leadingAnchor, bottom: self.profilePicture.bottomAnchor, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 0))
-        priceLabel.anchor(top: self.topAnchor, leading: self.priceLabel.trailingAnchor, bottom: self.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 5))
+        nameLabel.anchor(top: self.imageView.topAnchor, leading: self.imageView.trailingAnchor, bottom: self.imageView.bottomAnchor, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 0))
+        priceLabel.anchor(top: self.nameLabel.topAnchor, leading: self.nameLabel.trailingAnchor, bottom: self.nameLabel.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 15))
     }
     
-    let profilePicture: UIImageView = {
-        let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
+    let imageView: UIImageView = {
+        let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         img.layer.borderWidth = 1.0
         img.layer.masksToBounds = false
         img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
@@ -375,7 +383,7 @@ class giftCVCell: UICollectionViewCell {
     
     let nameLabel: UILabel = {
         let lbl = UILabel()
-        lbl.text = "Matthew Wells"
+        lbl.text = "Test Item"
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
@@ -383,7 +391,8 @@ class giftCVCell: UICollectionViewCell {
     let priceLabel: UILabel = {
         let priceLbl = UILabel()
         priceLbl.text = "$20.00"
-        //priceLbl.font = priceLbl.font.withSize(12)
+        
+        priceLbl.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         priceLbl.translatesAutoresizingMaskIntoConstraints = false
         //priceLbl.backgroundColor = .red
         return priceLbl

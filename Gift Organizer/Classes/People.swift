@@ -39,6 +39,13 @@ class People {
         note = notes
     }
     
+    init(name: String, total: Double, group: String, notes: String) {
+        fullName = name
+        totalBudget = total
+        groupSection = group
+        note = notes
+    }
+    
     init(name: String, total: Double, group: String) {
         fullName = name
         totalBudget = total

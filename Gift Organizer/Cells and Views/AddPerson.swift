@@ -9,9 +9,17 @@
 import Foundation
 import UIKit
 
-class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
+
     
     let DH = DataHandler.standard
+    let cvCellId = "cvCellID"
+    
+    var collectionView: UICollectionView!
+    var CVHidden = false
+    
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +36,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         self.addView.addSubview(progressBar)
         self.addView.addSubview(barLabel)
         self.addView.addSubview(imgButton)
-       // self.addView.addSubview(giftCollectionView)
+        setUpCV()
         self.hideKeyboardWhenTappedAround()
         
         let tapReconizer = UITapGestureRecognizer(target: self, action: #selector(self.handleImgViewTap))
@@ -42,9 +50,13 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    
+    override func viewWillAppear(_ animated: Bool) {
         setProgressBarValue()
+        collectionView.reloadData()
+        collectionView.isHidden = CVHidden
     }
+    
     
     func setProgressBarValue(){
         let spent = DH.data[DH.personIndex].spentBudget
@@ -58,6 +70,8 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         self.notesTextField.text = ""
         self.budgetTextField.text = ""
         self.imgView.image = nil
+        self.progressBar.progress = 0.0
+        
     }
     
     //Image View is tapped
@@ -112,23 +126,23 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         imgView.anchor(top: self.addView.topAnchor, leading: self.view.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: 100, height: 100))
         
         nameLabel.anchor(top: self.imgView.topAnchor, leading: self.nameTextField.leadingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
-        nameTextField.anchor(top: self.nameLabel.bottomAnchor, leading: self.imgView.trailingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 5, left: 25, bottom: 0, right: 25), size: .init(width: 0, height: 25))
+        nameTextField.anchor(top: self.nameLabel.bottomAnchor, leading: self.imgView.trailingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 5, left: 25, bottom: 0, right: 10), size: .init(width: 0, height: 25))
         
         groupLabel.anchor(top: self.nameTextField.bottomAnchor, leading: self.nameTextField.leadingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
-        groupTextField.anchor(top: self.groupLabel.bottomAnchor, leading: self.nameTextField.leadingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 25), size: .init(width: 0, height: 25))
+        groupTextField.anchor(top: self.groupLabel.bottomAnchor, leading: self.nameTextField.leadingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 10), size: .init(width: 0, height: 25))
         
         budgetLabel.anchor(top: self.imgButton.bottomAnchor, leading: self.imgButton.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 20, left: 0, bottom: 0, right: 0))
         budgetTextField.anchor(top: self.budgetLabel.bottomAnchor, leading: self.budgetLabel.leadingAnchor, bottom: nil, trailing: self.budgetLabel.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: -20), size: .init(width: 80, height: 25))
         
-        notesLabel.anchor(top: self.budgetTextField.bottomAnchor, leading: self.budgetTextField.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
-        notesTextField.anchor(top: self.notesLabel.bottomAnchor, leading: self.notesLabel.leadingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 25), size: .init(width: 0, height: 25))
-        
-        progressBar.anchor(top: self.budgetTextField.topAnchor, leading: self.imgView.trailingAnchor, bottom: self.budgetTextField.bottomAnchor, trailing: self.addView.trailingAnchor, padding: .init(top: 0, left: 15, bottom: 0, right: 25))
+        progressBar.anchor(top: self.budgetTextField.topAnchor, leading: self.imgView.trailingAnchor, bottom: self.budgetTextField.bottomAnchor, trailing: self.addView.trailingAnchor, padding: .init(top: 0, left: 15, bottom: 0, right: 10))
         barLabel.anchor(top: self.budgetLabel.topAnchor, leading: self.progressBar.leadingAnchor, bottom: self.budgetLabel.bottomAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 0, right: 0))
+        
+        notesLabel.anchor(top: self.budgetTextField.bottomAnchor, leading: self.budgetTextField.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 0, bottom: 0, right: 0))
+        notesTextField.anchor(top: self.notesLabel.bottomAnchor, leading: self.notesLabel.leadingAnchor, bottom: nil, trailing: self.addView.trailingAnchor, padding: .init(top: 5, left: 0, bottom: 0, right: 10), size: .init(width: 0, height: 60))
         
         imgButton.anchor(top: self.imgView.bottomAnchor, leading: self.imgView.leadingAnchor, bottom: self.budgetLabel.topAnchor, trailing: self.imgView.trailingAnchor, padding: .init(top: 2, left: 0, bottom: 0, right: 0))
         
-        //giftCollectionView.anchor(top: self.notesLabel.bottomAnchor, leading: self.addView.leadingAnchor, bottom: self.addView.bottomAnchor, trailing: self.addView.trailingAnchor, padding: .init(top: 10, left: 15, bottom: 15, right: 15))
+        collectionView.anchor(top: self.notesTextField.bottomAnchor, leading: self.notesTextField.leadingAnchor, bottom: self.addView.bottomAnchor, trailing: self.notesTextField.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 15, right: 0))
     }
     
     //View and Keyboard Obvserver
@@ -139,6 +153,42 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
     }
     
+    //Setup the CV
+    func setUpCV(){
+        
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
+        layout.itemSize = CGSize(width: self.view.frame.width/1.3, height: 10)
+        
+        collectionView = UICollectionView(frame: self.addView.frame, collectionViewLayout: layout)
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(giftCVCell.self, forCellWithReuseIdentifier: cvCellId)
+        //collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        collectionView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        self.addView.addSubview(collectionView)
+        
+    }
+    
+    //CollectionView Methods
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return DH.data[DH.personIndex].giftIdeaList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let myCell = collectionView.dequeueReusableCell(withReuseIdentifier: cvCellId, for: indexPath) as! giftCVCell
+        myCell.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+        myCell.imageView.image = DH.data[DH.personIndex].giftIdeaList[indexPath.row].imageView.image
+        myCell.nameLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].title
+        myCell.priceLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].priceString()
+        
+        return myCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width/1.1, height: collectionView.frame.height/4)
+    }
     
     //Views Created
     let addView: UIView = {
@@ -150,8 +200,6 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
         return view
     }()
-    
-    
     
     let nameTextField: UITextField = {
         let field = UITextField()
@@ -230,13 +278,14 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         return lbl
     }()
     
-    let notesTextField: UITextField = {
-        let field = UITextField()
+    let notesTextField: UITextView = {
+        let field = UITextView()
         field.keyboardType = UIKeyboardType.decimalPad
         field.translatesAutoresizingMaskIntoConstraints = false
         field.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         field.layer.borderWidth = 2
         field.layer.cornerRadius = 5
+        
         field.autocapitalizationType = .none
         return field
     }()
@@ -269,14 +318,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         return btn
     }()
     
-//    let giftCollectionView: UICollectionView = {
-//        let cv = UICollectionView()
-//        cv.collectionViewLayout = UICollectionViewFlowLayout()
-//        cv.backgroundColor = .blue
-//        return cv
-//    }()
-    
-    
+    //ImagePicker Handles img picked
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let theinfo:NSDictionary = info as NSDictionary
         let img:UIImage = theinfo.object(forKey: UIImagePickerController.InfoKey.originalImage) as! UIImage
@@ -287,6 +329,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
     }
     
+    //Keyboard Hiding Stuff
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y == 0{

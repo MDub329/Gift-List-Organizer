@@ -42,6 +42,7 @@ class PeopleVC: UITableViewController {
     //Setup AddPersonVC Bar Button
     func setUpAddPerson(){
         self.addPersonVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.handleSave))
+        self.addPersonVC.CVHidden = true
     }
     
     //Setup EditPersonVC Bar Button
@@ -115,12 +116,36 @@ class PeopleVC: UITableViewController {
         self.navigationController?.pushViewController(self.addPersonVC, animated: true)
     }
     
+    var sectionArray = [String]()
+    
+    //Builds the Section Array
+    func buildSectionsArray(){
+        for person in DH.data {
+            if (!isInSectionArray(group: person.groupSection)){
+                sectionArray.append(person.groupSection)
+            }
+        }
+        
+    }
+    
+    //Checks to see if There is a group not in the SectionArray
+    func isInSectionArray(group: String) -> Bool {
+        var value = false
+            for test in sectionArray{
+                if (test == group) {
+                    value = true
+                }
+            }
+        return value
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
         #warning("Testing")
+        buildSectionsArray()
         return 1
     }
     
@@ -130,7 +155,6 @@ class PeopleVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let myCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! peopleCell
-        //myCell.nameLabel.text = "Matthew Wells"
         myCell.nameLabel.text = DH.data[indexPath.row].fullName
         myCell.profilePicture.image = DH.data[indexPath.row].imageView.image
         
@@ -167,6 +191,7 @@ class PeopleVC: UITableViewController {
             self.editPersonVC.groupTextField.text = selectedPerson.groupSection
             self.editPersonVC.budgetTextField.text = selectedPerson.totalToString()
             self.editPersonVC.notesTextField.text = selectedPerson.note
+            
             
             self.navigationController?.pushViewController(self.editPersonVC, animated: true)
         }
