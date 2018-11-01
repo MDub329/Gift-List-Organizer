@@ -100,14 +100,13 @@ class HeaderCell: UITableViewHeaderFooterView {
         profilePicture.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: 50, height: 50))
         profilePicture.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
-        nameLabel.anchor(top: nil, leading: self.profilePicture.trailingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 10, bottom: 0, right: 50))
+        nameLabel.anchor(top: nil, leading: self.profilePicture.trailingAnchor, bottom: nil, trailing: self.totalBudgetLabel.leadingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 0))
         nameLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
-        budgetTitleLabel.anchor(top: nil, leading: nil, bottom: totalBudgetLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 5, right: 0))
-        budgetTitleLabel.centerXAnchor.constraint(equalTo: self.totalBudgetLabel.centerXAnchor).isActive = true
+        budgetTitleLabel.anchor(top: self.remainingTitleLabel.topAnchor, leading: nil, bottom: self.remainingTitleLabel.bottomAnchor, trailing: self.remainingTitleLabel.leadingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 10))
         
-        totalBudgetLabel.anchor(top: nil, leading: self.nameLabel.trailingAnchor, bottom: nil, trailing: self.budgetTitleLabel.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 10))
-        totalBudgetLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        totalBudgetLabel.anchor(top: self.remainingLabel.topAnchor, leading: nil, bottom: self.remainingLabel.bottomAnchor, trailing: nil)
+        totalBudgetLabel.centerXAnchor.constraint(equalTo: self.budgetTitleLabel.centerXAnchor).isActive = true
         
         remainingLabel.anchor(top: nil, leading: nil, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 15))
         remainingLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
@@ -115,7 +114,6 @@ class HeaderCell: UITableViewHeaderFooterView {
         remainingTitleLabel.anchor(top: nil, leading: nil, bottom: remainingLabel.topAnchor, trailing: nil, padding: .init(top: 0, left: 0, bottom: 5, right: 0))
         remainingTitleLabel.centerXAnchor.constraint(equalTo: self.remainingLabel.centerXAnchor).isActive = true
         
-        groupLabel.centerXAnchor.constraint(equalTo: self.nameLabel.centerXAnchor).isActive = true
         groupLabel.anchor(top: self.nameLabel.bottomAnchor, leading: self.nameLabel.leadingAnchor, bottom: self.bottomAnchor, trailing: self.nameLabel.trailingAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 0))
         
     }
