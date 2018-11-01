@@ -74,8 +74,9 @@ class PeopleVC: UITableViewController {
         
         DH.data.append(newPerson)
         DH.personIndex = DH.data.count - 1
-        self.navigationController?.popViewController(animated: true)
         
+        self.navigationController?.popViewController(animated: true)
+        self.navigationItem.hidesBackButton = false
     }
     
     //EditPersonVC Edit button pressed
@@ -112,7 +113,6 @@ class PeopleVC: UITableViewController {
     @objc func handleAdd(){
         //Add button is pressed
         self.addPersonVC.clearFields()
-        
         self.navigationController?.pushViewController(self.addPersonVC, animated: true)
     }
     
@@ -199,21 +199,25 @@ class PeopleVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
-            let alert = UIAlertController(title: "Delete", message: "Are you sure you want to Delete?", preferredStyle: UIAlertController.Style.alert)
-            alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
-                
-                //Clean up calls with this Constant
-                self.DH.data.remove(at: indexPath.row)
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-                self.DH.personIndex -= 1
-                
-            }))
-            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
-                
-            }))
-            self.present(alert, animated: true, completion: nil)
+            if (DH.data.count > 1){
+                let alert = UIAlertController(title: "Delete", message: "Are you sure you want to Delete?", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+                    
+                    //Clean up calls with this Constant
+                    self.DH.data.remove(at: indexPath.row)
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                    self.DH.personIndex = 0
+                }))
+                alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                    
+                }))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Error", message: "Can not delete last person in list!", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
     }
-    
     
 }

@@ -36,7 +36,6 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         self.addView.addSubview(progressBar)
         self.addView.addSubview(barLabel)
         self.addView.addSubview(imgButton)
-        setUpCV()
         self.hideKeyboardWhenTappedAround()
         
         let tapReconizer = UITapGestureRecognizer(target: self, action: #selector(self.handleImgViewTap))
@@ -47,14 +46,19 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
         setUpConstraints()
         miscSetup()
+        if (!DH.data.isEmpty){
+            setUpCV()
+        }
         
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
-        setProgressBarValue()
-        collectionView.reloadData()
-        collectionView.isHidden = CVHidden
+        if (!DH.data.isEmpty){
+            setProgressBarValue()
+            collectionView.reloadData()
+            collectionView.isHidden = CVHidden
+        }
     }
     
     
@@ -142,7 +146,6 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
         imgButton.anchor(top: self.imgView.bottomAnchor, leading: self.imgView.leadingAnchor, bottom: self.budgetLabel.topAnchor, trailing: self.imgView.trailingAnchor, padding: .init(top: 2, left: 0, bottom: 0, right: 0))
         
-        collectionView.anchor(top: self.notesTextField.bottomAnchor, leading: self.notesTextField.leadingAnchor, bottom: self.addView.bottomAnchor, trailing: self.notesTextField.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 15, right: 0))
     }
     
     //View and Keyboard Obvserver
@@ -169,6 +172,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         collectionView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
         self.addView.addSubview(collectionView)
         
+        collectionView.anchor(top: self.notesTextField.bottomAnchor, leading: self.notesTextField.leadingAnchor, bottom: self.addView.bottomAnchor, trailing: self.notesTextField.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 15, right: 0))
     }
     
     //CollectionView Methods

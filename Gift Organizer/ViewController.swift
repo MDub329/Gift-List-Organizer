@@ -37,8 +37,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        
+    override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
     }
 
@@ -126,6 +125,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         
         DH.data[DH.personIndex].giftIdeaList.append(newGift)
         //checkImgNameArray.append(emptyBox)
+        
         tableView.reloadSections([0], with: .automatic)
         self.dismiss(animated: true, completion: nil)
         
