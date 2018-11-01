@@ -28,6 +28,13 @@ class GiftIdeas {
         link = lnk
     }
     
+    init(ttl: String, desc: String, prc: Double, lnk: String) {
+        title = ttl
+        description = desc
+        price = prc
+        link = lnk
+    }
+    
     init() {
         
     }

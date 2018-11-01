@@ -17,6 +17,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     
     var collectionView: UICollectionView!
     var CVHidden = false
+    var titleString = ""
     
     
     
@@ -51,19 +52,18 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
     }
     
-    func setUpNav(){
-        navigationController?.navigationBar.prefersLargeTitles = false
-        self.title = "Add Person"
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
-        if (!DH.data.isEmpty){
+        if (self.navigationItem.title != "Add Person") {
             setProgressBarValue()
-            collectionView.reloadData()
-            collectionView.isHidden = CVHidden
         }
+        collectionView.reloadData()
+        collectionView.isHidden = CVHidden
     }
     
+    
+    func setUpNav(){
+        self.title = titleString
+    }
     
     func setProgressBarValue(){
         let spent = DH.data[DH.personIndex].spentBudget
@@ -86,7 +86,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         //Make image bigger to inspect
         let imageView = Sender.view as! UIImageView
         let fullScreenImageView = UIImageView(image: imageView.image)
-        fullScreenImageView.frame = UIScreen.main.bounds
+        fullScreenImageView.frame = imageView.frame
         fullScreenImageView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.6)
         fullScreenImageView.contentMode = .scaleAspectFit
         fullScreenImageView.isUserInteractionEnabled = true
@@ -94,7 +94,10 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         fullScreenImageView.addGestureRecognizer(tap)
         
         #warning("Animate Image")
-        
+//        UIView.animate(withDuration: 2.0, animations: {() -> Void in
+//            fullScreenImageView.frame = UIScreen.main.bounds
+//        })
+//        
         
         self.view.addSubview(fullScreenImageView)
         self.navigationController?.isNavigationBarHidden = true

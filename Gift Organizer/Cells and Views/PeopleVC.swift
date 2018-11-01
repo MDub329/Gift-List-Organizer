@@ -32,7 +32,7 @@ class PeopleVC: UITableViewController {
     //adds buttons to navBar
     func setUpNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.handleAdd))
-        navigationController?.navigationBar.prefersLargeTitles = true
+        self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "People"
         
         let backItem = UIBarButtonItem()
@@ -115,16 +115,23 @@ class PeopleVC: UITableViewController {
     @objc func handleAdd(){
         //Add button is pressed
         self.addPersonVC.clearFields()
+        self.addPersonVC.titleString = "Add Person"
         self.navigationController?.pushViewController(self.addPersonVC, animated: true)
     }
     
     var sectionArray = [String]()
+    var numSectionArray = [Int]()
     
     //Builds the Section Array
     func buildSectionsArray(){
         for person in DH.data {
             if (!isInSectionArray(group: person.groupSection)){
                 sectionArray.append(person.groupSection)
+                numSectionArray.append(1)
+            } else {
+                if let index = sectionArray.firstIndex(of: person.groupSection){
+                    numSectionArray[index] += 1
+                }
             }
         }
         
@@ -136,11 +143,29 @@ class PeopleVC: UITableViewController {
             for test in sectionArray{
                 if (test == group) {
                     value = true
+                    
                 }
             }
         return value
     }
     
+    func sortList(array: [People]) -> [People]{
+        #warning("Sort Array")
+        var sortedArray = [People]()
+        for group in sectionArray{
+            for item in array{
+                if (item.groupSection == group){
+                    sortedArray.append(item)
+                }
+            }
+        }
+        
+        
+        
+        return sortedArray
+    }
+    
+    //Return String value of total gifts purchased for given index
     func totalGiftsPurch(index: Int) -> String {
         var totPurch = 0
         for gift in DH.data[index].giftIdeaList {
@@ -158,6 +183,8 @@ class PeopleVC: UITableViewController {
     override func numberOfSections(in tableView: UITableView) -> Int {
         #warning("Testing")
         buildSectionsArray()
+        //let test = sortList(array: DH.data)
+        
         return 1
     }
     
@@ -200,6 +227,7 @@ class PeopleVC: UITableViewController {
             let selectedPerson = DH.data[Sender.indexPath.row]
             DH.personIndex = Sender.indexPath.row
     
+            self.editPersonVC.titleString = "Edit Person"
             self.editPersonVC.clearFields()
             self.editPersonVC.nameTextField.text = selectedPerson.fullName
             self.editPersonVC.imgView.image = selectedPerson.imageView.image
