@@ -26,7 +26,6 @@ class GiftIdeas {
         price = prc
         purchased = purch
         link = lnk
-        purchImage = purchString
     }
     
     init() {

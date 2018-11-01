@@ -46,12 +46,15 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
         setUpConstraints()
         miscSetup()
-        if (!DH.data.isEmpty){
-            setUpCV()
-        }
+        setUpCV()
+        setUpNav()
         
     }
     
+    func setUpNav(){
+        navigationController?.navigationBar.prefersLargeTitles = false
+        self.title = "Add Person"
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         if (!DH.data.isEmpty){
@@ -297,7 +300,6 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     let progressBar: UIProgressView = {
         let bar = UIProgressView()
         bar.translatesAutoresizingMaskIntoConstraints = false
-        bar.layer.cornerRadius = 10
         bar.layer.borderWidth = 2
         bar.layer.borderColor = #colorLiteral(red: 0.1921568662, green: 0.007843137719, blue: 0.09019608051, alpha: 1)
         bar.clipsToBounds = true

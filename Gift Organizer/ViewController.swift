@@ -31,20 +31,23 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         tableView.register(HeaderCell.self, forHeaderFooterViewReuseIdentifier: headerId)
         tableView.register(FooterCell.self, forHeaderFooterViewReuseIdentifier: footerId)
         
-        setUpNavBar()
         arrayTesting()
+        setUpNavBar()
 
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
+        self.title = DH.data[DH.personIndex].fullName
     }
 
     //adds buttons to navBar
     func setUpNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.handleAdd))
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.handleMore))
+        
+        
         
         //NavBar back text
         let backItem = UIBarButtonItem()
@@ -247,15 +250,17 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         let newPerson = People(name: "Matthew Wells", total: 100, group: "Family", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
         DH.data.append(newPerson)
         DH.data[DH.personIndex].spentBudget = calcSpent()
-        let newPerson1 = People(name: "Matthew Wells1", total: 100, group: "Co-Worker")
+        let newPerson1 = People(name: "Matthew Wells1", total: 110, group: "Co-Worker", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
         DH.data.append(newPerson1)
         DH.data[DH.personIndex].spentBudget = calcSpent()
-        let newPerson2 = People(name: "Matthew Wells2", total: 100, group: "Family")
+        let newPerson2 = People(name: "Matthew Wells2", total: 120, group: "Family", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
         DH.data.append(newPerson2)
         DH.data[DH.personIndex].spentBudget = calcSpent()
-        let newPerson3 = People(name: "Matthew Wells3", total: 100, group: "Misc")
+        let newPerson3 = People(name: "Matthew Wells3", total: 130, group: "Misc", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
         DH.data.append(newPerson3)
         DH.data[DH.personIndex].spentBudget = calcSpent()
+        
+        
     }
     
     //Calculates the amount spent

@@ -25,13 +25,15 @@ class PeopleVC: UITableViewController {
         setUpEditPerson()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
     }
 
     //adds buttons to navBar
     func setUpNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.handleAdd))
+        navigationController?.navigationBar.prefersLargeTitles = true
+        self.title = "People"
         
         let backItem = UIBarButtonItem()
         backItem.title = "Cancel"
@@ -139,6 +141,16 @@ class PeopleVC: UITableViewController {
         return value
     }
     
+    func totalGiftsPurch(index: Int) -> String {
+        var totPurch = 0
+        for gift in DH.data[index].giftIdeaList {
+            if gift.purchased == true{
+                totPurch += 1
+            }
+        }
+        return String(totPurch)
+    }
+    
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
     }
@@ -157,6 +169,9 @@ class PeopleVC: UITableViewController {
         let myCell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! peopleCell
         myCell.nameLabel.text = DH.data[indexPath.row].fullName
         myCell.profilePicture.image = DH.data[indexPath.row].imageView.image
+        myCell.completionlabel.text = totalGiftsPurch(index: indexPath.row) + "/" + String(DH.data[indexPath.row].giftIdeaList.count)
+        
+        
         
         //Handle select Tap and Edit Tap
         let tapReconizer = MyTapGuesture(target: self, action: #selector(self.cellTap))
@@ -206,7 +221,9 @@ class PeopleVC: UITableViewController {
                     //Clean up calls with this Constant
                     self.DH.data.remove(at: indexPath.row)
                     tableView.deleteRows(at: [indexPath], with: .automatic)
-                    self.DH.personIndex = 0
+                    if (self.DH.personIndex > 0){
+                        self.DH.personIndex -= 1
+                    } 
                 }))
                 alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
                     
