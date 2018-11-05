@@ -15,6 +15,7 @@ class PeopleVC: UITableViewController {
     let cellId = "cellId"
     let addPersonVC = AddPerson()
     let editPersonVC = AddPerson()
+    //let giftListVC = GiftListVC()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,7 @@ class PeopleVC: UITableViewController {
         
         setUpAddPerson()
         setUpEditPerson()
+        arrayTesting()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,9 +37,9 @@ class PeopleVC: UITableViewController {
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.title = "People"
         
-        let backItem = UIBarButtonItem()
-        backItem.title = "Cancel"
-        navigationItem.backBarButtonItem = backItem
+//        let backItem = UIBarButtonItem()
+//        backItem.title = "Cancel"
+//        navigationItem.backBarButtonItem = backItem
         //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.handleMore))
     }
     
@@ -118,6 +120,7 @@ class PeopleVC: UITableViewController {
         self.addPersonVC.titleString = "Add Person"
         self.navigationController?.pushViewController(self.addPersonVC, animated: true)
     }
+    
     
     var sectionArray = [String]()
     var numSectionArray = [Int]()
@@ -217,7 +220,7 @@ class PeopleVC: UITableViewController {
     //Cell is tapped
     @objc func cellTap(Sender: MyLongPressGuesture) {
         DH.personIndex = Sender.indexPath.row
-        self.navigationController?.popViewController(animated: true)
+        self.navigationController?.pushViewController(GiftListVC(), animated: true)
     }
     
     //Cell is Long Pressed
@@ -263,6 +266,67 @@ class PeopleVC: UITableViewController {
                 self.present(alert, animated: true, completion: nil)
             }
         }
+    }
+ 
+    #warning("Used for Testing")
+    func arrayTesting() {
+        let newGift = GiftIdeas(ttl: "Gift 1", desc: "Test Desc blah blah blah blahb blah", prc: 10, lnk: " ")
+        let newGift1 = GiftIdeas(ttl: "Gift 2", desc: "Test Desc blah blah blah blahb blah", prc: 20, lnk: " ")
+        let newGift2 = GiftIdeas(ttl: "Gift 3", desc: "Test Desc blah blah blah blahb blah", prc: 30, lnk: " ")
+        let newGift3 = GiftIdeas(ttl: "Gift 4", desc: "Test Desc blah blah blah blahb blah", prc: 40, lnk: " ")
+        
+        let newPerson = People(name: "Matthew Wells", total: 100, group: "Family", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
+        newPerson.giftIdeaList.append(newGift)
+        newPerson.giftIdeaList.append(newGift1)
+        newPerson.giftIdeaList.append(newGift2)
+        newPerson.giftIdeaList.append(newGift3)
+        
+        DH.data.append(newPerson)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
+        let newPerson1 = People(name: "Matthew Wells1", total: 110, group: "Co-Worker", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
+        
+        let newGift10 = GiftIdeas(ttl: "Gift 1", desc: "Test Desc blah blah blah blahb blah", prc: 10, lnk: " ")
+        let newGift11 = GiftIdeas(ttl: "Gift 2", desc: "Test Desc blah blah blah blahb blah", prc: 20, lnk: " ")
+        let newGift21 = GiftIdeas(ttl: "Gift 3", desc: "Test Desc blah blah blah blahb blah", prc: 30, lnk: " ")
+        let newGift31 = GiftIdeas(ttl: "Gift 4", desc: "Test Desc blah blah blah blahb blah", prc: 40, lnk: " ")
+        
+        newPerson1.giftIdeaList.append(newGift10)
+        newPerson1.giftIdeaList.append(newGift11)
+        newPerson1.giftIdeaList.append(newGift21)
+        newPerson1.giftIdeaList.append(newGift31)
+        
+        DH.data.append(newPerson1)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
+        let newPerson2 = People(name: "Matthew Wells2", total: 120, group: "Family", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
+        let newGift109 = GiftIdeas(ttl: "Gift 1", desc: "Test Desc blah blah blah blahb blah", prc: 10, lnk: " ")
+        let newGift118 = GiftIdeas(ttl: "Gift 2", desc: "Test Desc blah blah blah blahb blah", prc: 20, lnk: " ")
+        let newGift217 = GiftIdeas(ttl: "Gift 3", desc: "Test Desc blah blah blah blahb blah", prc: 30, lnk: " ")
+        let newGift316 = GiftIdeas(ttl: "Gift 4", desc: "Test Desc blah blah blah blahb blah", prc: 40, lnk: " ")
+        
+        newPerson2.giftIdeaList.append(newGift109)
+        newPerson2.giftIdeaList.append(newGift118)
+        newPerson2.giftIdeaList.append(newGift217)
+        newPerson2.giftIdeaList.append(newGift316)
+        DH.data.append(newPerson2)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
+        let newPerson3 = People(name: "Matthew Wells3", total: 130, group: "Misc", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")
+        DH.data.append(newPerson3)
+        DH.data[DH.personIndex].spentBudget = calcSpent()
+        
+        
+    }
+    
+    //Calculates the amount spent
+    func calcSpent() -> Double{
+        var sum = 0.0
+        if (!DH.data[DH.personIndex].giftIdeaList.isEmpty){
+            for item in DH.data[DH.personIndex].giftIdeaList {
+                if (item.purchased == true){
+                    sum += item.price
+                }
+            }
+        }
+        return sum
     }
     
 }

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BC3C7A5F216869550036A3A1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A5E216869550036A3A1 /* AppDelegate.swift */; };
-		BC3C7A61216869550036A3A1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A60216869550036A3A1 /* ViewController.swift */; };
+		BC3C7A61216869550036A3A1 /* GiftListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A60216869550036A3A1 /* GiftListVC.swift */; };
 		BC3C7A67216869550036A3A1 /* Gift_Organizer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = BC3C7A65216869550036A3A1 /* Gift_Organizer.xcdatamodeld */; };
 		BC3C7A69216869560036A3A1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BC3C7A68216869560036A3A1 /* Assets.xcassets */; };
 		BC3C7A6C216869560036A3A1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BC3C7A6A216869560036A3A1 /* LaunchScreen.storyboard */; };
@@ -25,7 +25,7 @@
 /* Begin PBXFileReference section */
 		BC3C7A5B216869550036A3A1 /* Gift Organizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Gift Organizer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BC3C7A5E216869550036A3A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BC3C7A60216869550036A3A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BC3C7A60216869550036A3A1 /* GiftListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiftListVC.swift; sourceTree = "<group>"; };
 		BC3C7A66216869550036A3A1 /* Gift_Organizer.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Gift_Organizer.xcdatamodel; sourceTree = "<group>"; };
 		BC3C7A68216869560036A3A1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC3C7A6B216869560036A3A1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -74,7 +74,7 @@
 				BC3C7A78216994200036A3A1 /* Cells and Views */,
 				BC3C7A7321686BB20036A3A1 /* Classes */,
 				BC3C7A5E216869550036A3A1 /* AppDelegate.swift */,
-				BC3C7A60216869550036A3A1 /* ViewController.swift */,
+				BC4E56DF218234C200A6E383 /* PeopleVC.swift */,
 				BC3C7A68216869560036A3A1 /* Assets.xcassets */,
 				BC3C7A6A216869560036A3A1 /* LaunchScreen.storyboard */,
 				BC3C7A6D216869560036A3A1 /* Info.plist */,
@@ -95,9 +95,9 @@
 		BC3C7A78216994200036A3A1 /* Cells and Views */ = {
 			isa = PBXGroup;
 			children = (
+				BC3C7A60216869550036A3A1 /* GiftListVC.swift */,
 				BC3C7A79216994360036A3A1 /* Cells.swift */,
 				BC3C7A7D216ABFF20036A3A1 /* AddPopupView.swift */,
-				BC4E56DF218234C200A6E383 /* PeopleVC.swift */,
 				BC4E56E52183805800A6E383 /* AddPerson.swift */,
 			);
 			path = "Cells and Views";
@@ -186,7 +186,7 @@
 				BC3C7A7521686BD40036A3A1 /* People.swift in Sources */,
 				BC3C7A7A216994360036A3A1 /* Cells.swift in Sources */,
 				BC3C7A77216993CA0036A3A1 /* GiftIdea.swift in Sources */,
-				BC3C7A61216869550036A3A1 /* ViewController.swift in Sources */,
+				BC3C7A61216869550036A3A1 /* GiftListVC.swift in Sources */,
 				BC3C7A7E216ABFF20036A3A1 /* AddPopupView.swift in Sources */,
 				BC3C7A5F216869550036A3A1 /* AppDelegate.swift in Sources */,
 				BC3C7A67216869550036A3A1 /* Gift_Organizer.xcdatamodeld in Sources */,

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class HomeController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class GiftListVC: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     let cellId = "cellId"
     let headerId = "headerId"
@@ -31,7 +31,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
         tableView.register(HeaderCell.self, forHeaderFooterViewReuseIdentifier: headerId)
         tableView.register(FooterCell.self, forHeaderFooterViewReuseIdentifier: footerId)
         
-        arrayTesting()
+        //arrayTesting()
         setUpNavBar()
 
         
@@ -45,7 +45,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
     //adds buttons to navBar
     func setUpNavBar() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.handleAdd))
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.handleMore))
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.handleMore))
         
         
         
@@ -69,7 +69,7 @@ class HomeController: UITableViewController, UIImagePickerControllerDelegate, UI
             self.addPopUpView.addView.heightAnchor.constraint(equalToConstant: window.frame.width/1.1).isActive = true
             self.addPopUpView.addView.widthAnchor.constraint(equalToConstant: window.frame.width/1.2).isActive = true
             
-            self.addPopUpView.titleTextField.select(self) //Sets the cursor to titleTextfield
+            //self.addPopUpView.titleTextField.select(self) //Sets the cursor to titleTextfield
             
             self.addPopUpView.titleTextField.text = ""
             self.addPopUpView.descTextField.text = ""

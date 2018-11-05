@@ -157,8 +157,8 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     //View and Keyboard Obvserver
     func miscSetup() {
         view.backgroundColor = UIColor(white: 0, alpha: 0.5)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
     }
     
@@ -290,7 +290,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     
     let notesTextField: UITextView = {
         let field = UITextView()
-        field.keyboardType = UIKeyboardType.decimalPad
+        
         field.translatesAutoresizingMaskIntoConstraints = false
         field.layer.borderColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
         field.layer.borderWidth = 2
@@ -338,21 +338,21 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         
     }
     
-    //Keyboard Hiding Stuff
-    @objc func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y == 0{
-                self.view.frame.origin.y -= keyboardSize.height/2
-            }
-        }
-    }
-    
-    @objc func keyboardWillHide(notification: NSNotification) {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
-            if self.view.frame.origin.y != 0{
-                self.view.frame.origin.y += keyboardSize.height/2
-            }
-        }
-    }
+//    //Keyboard Hiding Stuff
+//    @objc func keyboardWillShow(notification: NSNotification) {
+//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+//            if self.view.frame.origin.y == 0{
+//                self.view.frame.origin.y -= keyboardSize.height/2
+//            }
+//        }
+//    }
+//
+//    @objc func keyboardWillHide(notification: NSNotification) {
+//        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+//            if self.view.frame.origin.y != 0{
+//                self.view.frame.origin.y += keyboardSize.height/2
+//            }
+//        }
+//    }
     
 }
