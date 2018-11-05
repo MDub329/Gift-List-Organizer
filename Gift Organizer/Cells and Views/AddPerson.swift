@@ -175,7 +175,7 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
         collectionView.register(giftCVCell.self, forCellWithReuseIdentifier: cvCellId)
         //collectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        collectionView.backgroundColor = #colorLiteral(red: 0.4745098054, green: 0.8392156959, blue: 0.9764705896, alpha: 1)
+        collectionView.backgroundColor = .clear
         self.addView.addSubview(collectionView)
         
         collectionView.anchor(top: self.notesTextField.bottomAnchor, leading: self.notesTextField.leadingAnchor, bottom: self.addView.bottomAnchor, trailing: self.notesTextField.trailingAnchor, padding: .init(top: 10, left: 0, bottom: 15, right: 0))
@@ -188,10 +188,11 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let myCell = collectionView.dequeueReusableCell(withReuseIdentifier: cvCellId, for: indexPath) as! giftCVCell
-        myCell.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+        //myCell.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
         myCell.imageView.image = DH.data[DH.personIndex].giftIdeaList[indexPath.row].imageView.image
         myCell.nameLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].title
         myCell.priceLabel.text = DH.data[DH.personIndex].giftIdeaList[indexPath.row].priceString()
+        myCell.checkBoxLabel.image = UIImage(named: DH.data[DH.personIndex].giftIdeaList[indexPath.row].purchImage)
         
         return myCell
     }

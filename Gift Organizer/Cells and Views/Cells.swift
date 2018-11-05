@@ -340,6 +340,7 @@ class giftCVCell: UICollectionViewCell {
         self.addSubview(imageView)
         self.addSubview(nameLabel)
         self.addSubview(priceLabel)
+        self.addSubview(checkBoxLabel)
         setUpConstraints()
         
         setUpCellStyle()
@@ -358,7 +359,10 @@ class giftCVCell: UICollectionViewCell {
         imageView.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 0, left: 5, bottom: 0, right: 0), size: .init(width: 40, height: 40))
         
         nameLabel.anchor(top: self.imageView.topAnchor, leading: self.imageView.trailingAnchor, bottom: self.imageView.bottomAnchor, trailing: self.priceLabel.leadingAnchor, padding: .init(top: 0, left: 5, bottom: 0, right: 0))
-        priceLabel.anchor(top: self.nameLabel.topAnchor, leading: self.nameLabel.trailingAnchor, bottom: self.nameLabel.bottomAnchor, trailing: self.trailingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 15))
+        priceLabel.anchor(top: self.nameLabel.topAnchor, leading: self.nameLabel.trailingAnchor, bottom: self.nameLabel.bottomAnchor, trailing: self.checkBoxLabel.leadingAnchor, padding: .init(top: 0, left: 10, bottom: 0, right: 15))
+        
+        checkBoxLabel.anchor(top: nil, leading: nil, bottom: nil, trailing: self.trailingAnchor, padding: .init(top: 0, left: 0, bottom: 0, right: 15), size: .init(width: 25, height: 25))
+        checkBoxLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
     
     let imageView: UIImageView = {
@@ -389,6 +393,16 @@ class giftCVCell: UICollectionViewCell {
         //priceLbl.backgroundColor = .red
         return priceLbl
     }()
+    
+    let checkBoxLabel: UIImageView = {
+        let checkBLbl = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
+        checkBLbl.image = UIImage(named: "Checkmarkempty")
+        checkBLbl.translatesAutoresizingMaskIntoConstraints = false
+        //checkBLbl.backgroundColor = .red
+        
+        return checkBLbl
+    }()
+    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
