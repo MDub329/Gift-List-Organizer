@@ -337,10 +337,7 @@ class giftCVCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.addSubview(imageView)
-        self.addSubview(nameLabel)
-        self.addSubview(priceLabel)
-        self.addSubview(checkBoxLabel)
+        self.addSubViewsUsingAutoLayout(imageView, nameLabel, priceLabel, checkBoxLabel)
         setUpConstraints()
         
         setUpCellStyle()
@@ -371,7 +368,6 @@ class giftCVCell: UICollectionViewCell {
         img.layer.masksToBounds = false
         img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         img.layer.cornerRadius = img.frame.size.height/2
-        img.translatesAutoresizingMaskIntoConstraints = false
         img.clipsToBounds = true
         img.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1)
         return img
@@ -380,26 +376,19 @@ class giftCVCell: UICollectionViewCell {
     let nameLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "Test Item"
-        lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
     let priceLabel: UILabel = {
         let priceLbl = UILabel()
         priceLbl.text = "$20.00"
-        
         priceLbl.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
-        priceLbl.translatesAutoresizingMaskIntoConstraints = false
-        //priceLbl.backgroundColor = .red
         return priceLbl
     }()
     
     let checkBoxLabel: UIImageView = {
         let checkBLbl = UIImageView(frame: CGRect(x: 0, y: 0, width: 25, height: 25))
         checkBLbl.image = UIImage(named: "Checkmarkempty")
-        checkBLbl.translatesAutoresizingMaskIntoConstraints = false
-        //checkBLbl.backgroundColor = .red
-        
         return checkBLbl
     }()
     
