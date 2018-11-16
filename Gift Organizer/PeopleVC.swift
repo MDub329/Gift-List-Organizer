@@ -162,9 +162,6 @@ class PeopleVC: UITableViewController {
                 }
             }
         }
-        
-        
-        
         return sortedArray
     }
     
@@ -245,7 +242,7 @@ class PeopleVC: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == UITableViewCell.EditingStyle.delete) {
-            if (DH.data.count > 1){
+//            if (DH.data.count > 1){
                 let alert = UIAlertController(title: "Delete", message: "Are you sure you want to Delete?", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                     
@@ -260,11 +257,11 @@ class PeopleVC: UITableViewController {
                     
                 }))
                 self.present(alert, animated: true, completion: nil)
-            } else {
-                let alert = UIAlertController(title: "Error", message: "Can not delete last person in list!", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
-                self.present(alert, animated: true, completion: nil)
-            }
+//            } else {
+//                let alert = UIAlertController(title: "Error", message: "Can not delete last person in list!", preferredStyle: UIAlertController.Style.alert)
+//                alert.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+//                self.present(alert, animated: true, completion: nil)
+//            }
         }
     }
  
@@ -292,8 +289,8 @@ class PeopleVC: UITableViewController {
         
         newPerson1.giftIdeaList.append(newGift10)
         newPerson1.giftIdeaList.append(newGift11)
-        newPerson1.giftIdeaList.append(newGift21)
-        newPerson1.giftIdeaList.append(newGift31)
+//        newPerson1.giftIdeaList.append(newGift21)
+//        newPerson1.giftIdeaList.append(newGift31)
         
         DH.data.append(newPerson1)
         DH.data[DH.personIndex].spentBudget = calcSpent()
@@ -306,7 +303,7 @@ class PeopleVC: UITableViewController {
         newPerson2.giftIdeaList.append(newGift109)
         newPerson2.giftIdeaList.append(newGift118)
         newPerson2.giftIdeaList.append(newGift217)
-        newPerson2.giftIdeaList.append(newGift316)
+        //newPerson2.giftIdeaList.append(newGift316)
         DH.data.append(newPerson2)
         DH.data[DH.personIndex].spentBudget = calcSpent()
         let newPerson3 = People(name: "Matthew Wells3", total: 130, group: "Misc", notes: "Each of the collection views has an Index that you use to traverse the collection. This is maybe one of the big causes of pain when getting to grips with String. You cannot randomly access an element in a string using a subscript (e.g. string[5]).")

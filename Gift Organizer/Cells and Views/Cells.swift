@@ -24,11 +24,9 @@ class HeaderCell: UITableViewHeaderFooterView {
     let profilePicture: UIImageView = {
         let img = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         img.layer.borderWidth = 1.0
-        img.layer.masksToBounds = false
         img.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         img.layer.cornerRadius = img.frame.size.height/2
         img.translatesAutoresizingMaskIntoConstraints = false
-        img.clipsToBounds = true
         img.backgroundColor = #colorLiteral(red: 0.1764705926, green: 0.01176470611, blue: 0.5607843399, alpha: 1)
         return img
     }()
@@ -94,8 +92,8 @@ class HeaderCell: UITableViewHeaderFooterView {
         self.addSubview(budgetTitleLabel)
         self.addSubview(groupLabel)
         
-        profilePicture.clipsToBounds = true
         profilePicture.layer.masksToBounds = false
+        profilePicture.clipsToBounds = true
         
         profilePicture.anchor(top: nil, leading: self.leadingAnchor, bottom: nil, trailing: nil, padding: .init(top: 10, left: 10, bottom: 0, right: 0), size: .init(width: 50, height: 50))
         profilePicture.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true

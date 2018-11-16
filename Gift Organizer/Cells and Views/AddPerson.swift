@@ -183,7 +183,11 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     
     //CollectionView Methods
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return DH.data[DH.personIndex].giftIdeaList.count
+        var returnVal = 0
+        if !DH.data.isEmpty {
+            returnVal = DH.data[DH.personIndex].giftIdeaList.count
+        }
+        return returnVal
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
