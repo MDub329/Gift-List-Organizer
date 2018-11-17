@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import XLMediaZoom
 
 class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource{
 
@@ -85,31 +86,20 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     @objc func handleImgViewTap(Sender: UITapGestureRecognizer) {
         //Make image bigger to inspect
         let imageView = Sender.view as! UIImageView
-        let fullScreenImageView = UIImageView(image: imageView.image)
-        fullScreenImageView.frame = imageView.frame
-        fullScreenImageView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.6)
-        fullScreenImageView.contentMode = .scaleAspectFit
-        fullScreenImageView.isUserInteractionEnabled = true
-        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleFullScreenDismiss(Sender:)))
-        fullScreenImageView.addGestureRecognizer(tap)
-        
-        #warning("Animate Image")
-//        UIView.animate(withDuration: 2.0, animations: {() -> Void in
-//            fullScreenImageView.frame = UIScreen.main.bounds
-//        })
-//        
-        
-        self.view.addSubview(fullScreenImageView)
-        self.navigationController?.isNavigationBarHidden = true
-        self.tabBarController?.tabBar.isHidden = true
-        
-    }
-    
-    //Dismiss imageView when tapped
-    @objc func handleFullScreenDismiss(Sender: UITapGestureRecognizer) {
-        self.navigationController?.isNavigationBarHidden = false
-        self.tabBarController?.tabBar.isHidden = false
-        Sender.view?.removeFromSuperview()
+//        let newImageView = UIImageView(image: imageView.image)
+//        newImageView.frame = UIScreen.main.bounds
+//        newImageView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.6)
+//        newImageView.contentMode = .scaleAspectFit
+//        newImageView.isUserInteractionEnabled = true
+//        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleFullScreenDismiss(Sender:)))
+//        newImageView.addGestureRecognizer(tap)
+//        self.view.addSubview(newImageView)
+
+            //self.navigationController?.isNavigationBarHidden = true
+            let mediaZoom = XLMediaZoom(animationTime: 0.5, image: imageView)
+            view.addSubview(mediaZoom!)
+            
+            mediaZoom?.show()
     }
     
     //User Chooses camera or library

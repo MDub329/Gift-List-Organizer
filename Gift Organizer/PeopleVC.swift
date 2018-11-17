@@ -38,20 +38,22 @@ class PeopleVC: UITableViewController {
         self.title = "People"
         
 //        let backItem = UIBarButtonItem()
-//        backItem.title = "Cancel"
+//        backItem.action = #selector(self.handleCancel)
+////        backItem.title = "Cancel"
 //        navigationItem.backBarButtonItem = backItem
-        //navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .organize, target: self, action: #selector(self.handleMore))
     }
     
     //Setup AddPersonVC Bar Button
     func setUpAddPerson(){
         self.addPersonVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: .done, target: self, action: #selector(self.handleSave))
+        self.addPersonVC.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(self.handleCancel))
         self.addPersonVC.CVHidden = true
     }
     
     //Setup EditPersonVC Bar Button
     func setUpEditPerson() {
         self.editPersonVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Update", style: .done, target: self, action: #selector(self.handleUpdate))
+         self.editPersonVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(self.handleCancel))
     }
     
     //AddPersonVC Save button pressed
@@ -114,13 +116,25 @@ class PeopleVC: UITableViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+            //Add button is pressed
     @objc func handleAdd(){
-        //Add button is pressed
         self.addPersonVC.clearFields()
         self.addPersonVC.titleString = "Add Person"
         self.navigationController?.pushViewController(self.addPersonVC, animated: true)
     }
     
+    //Prompt user for conformation to cancel
+    @objc func handleCancel(){
+        //Insert prompt to insure the user wants to cancel
+        let alert = UIAlertController(title: "Cancel", message: "Are you sure you don't want to save?", preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+            self.navigationController?.popViewController(animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+            
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
     
     var sectionArray = [String]()
     var numSectionArray = [Int]()
