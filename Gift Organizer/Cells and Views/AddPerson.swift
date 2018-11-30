@@ -86,20 +86,15 @@ class AddPerson: UIViewController, UIImagePickerControllerDelegate, UINavigation
     @objc func handleImgViewTap(Sender: UITapGestureRecognizer) {
         //Make image bigger to inspect
         let imageView = Sender.view as! UIImageView
-//        let newImageView = UIImageView(image: imageView.image)
-//        newImageView.frame = UIScreen.main.bounds
-//        newImageView.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.6)
-//        newImageView.contentMode = .scaleAspectFit
-//        newImageView.isUserInteractionEnabled = true
-//        let tap = UITapGestureRecognizer(target: self, action: #selector(self.handleFullScreenDismiss(Sender:)))
-//        newImageView.addGestureRecognizer(tap)
-//        self.view.addSubview(newImageView)
 
-            //self.navigationController?.isNavigationBarHidden = true
-            let mediaZoom = XLMediaZoom(animationTime: 0.5, image: imageView)
-            view.addSubview(mediaZoom!)
-            
-            mediaZoom?.show()
+        if (imageView.image?.imageAsset != nil){
+            if let mediaZoom = XLMediaZoom(animationTime: 0.5, image: imageView) {
+                view.addSubview(mediaZoom)
+                
+                mediaZoom.show()
+            }
+        }
+        
     }
     
     //User Chooses camera or library
