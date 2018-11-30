@@ -39,7 +39,7 @@ class PeopleVC: UITableViewController {
         
 //        let backItem = UIBarButtonItem()
 //        backItem.action = #selector(self.handleCancel)
-////        backItem.title = "Cancel"
+//        backItem.title = "Cancel"
 //        navigationItem.backBarButtonItem = backItem
     }
     
@@ -53,7 +53,8 @@ class PeopleVC: UITableViewController {
     //Setup EditPersonVC Bar Button
     func setUpEditPerson() {
         self.editPersonVC.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Update", style: .done, target: self, action: #selector(self.handleUpdate))
-         self.editPersonVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(self.handleCancel))
+        //self.editPersonVC.navigationItem.backBarButtonItem = UIBarButtonItem(title: "test123", style: .done, target: self, action: #selector(self.handleCancel))
+        self.editPersonVC.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .done, target: self, action: #selector(self.handleCancel))
     }
     
     //AddPersonVC Save button pressed
@@ -127,7 +128,7 @@ class PeopleVC: UITableViewController {
     @objc func handleCancel(){
         //Insert prompt to insure the user wants to cancel
         let alert = UIAlertController(title: "Cancel", message: "Are you sure you don't want to save?", preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
+        alert.addAction(UIAlertAction(title: "Don't Save", style: .default, handler: { (action: UIAlertAction!) in
             self.navigationController?.popViewController(animated: true)
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
